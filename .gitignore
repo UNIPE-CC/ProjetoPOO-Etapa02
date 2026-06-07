@@ -1,0 +1,13 @@
+/nbproject/private/
+/build/
+
+.idea/
+*.iml
+
+.vscode/
+
+.classpath
+.project
+.settings/
+
+*.class
