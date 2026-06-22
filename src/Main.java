@@ -21,6 +21,13 @@ public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
+    
+    
+    //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
+    // da para colcar em todos os menus
+    
+    
+    
     public static void main(String[] args) {
         int opcao = -1;
         while (opcao != 0) {
@@ -34,7 +41,7 @@ public class Main {
             System.out.println("0 - Sair");
             System.out.print("Escolha: ");
             opcao = Integer.parseInt(sc.nextLine());
-
+            
             switch (opcao) {
                 case 1: menuPacientes(); break;
                 case 2: menuProfissionais(); break;
@@ -44,7 +51,7 @@ public class Main {
                 case 6: menuRelatorios(); break;
                 case 0: break;
                 default: System.out.println("Opcao invalida!"); break;
-            }
+            }                                               
         }
         System.out.println("Sistema encerrado.");
     }
