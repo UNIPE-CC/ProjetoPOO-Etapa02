@@ -37,5 +37,5 @@ public abstract class Pessoa {
         this.dataNascimento = dataNascimento;
     }
     
-    public abstract void exibirResumo();
+    public abstract String exibirResumo();
 }
