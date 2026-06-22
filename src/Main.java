@@ -27,6 +27,10 @@ public class Main {
     // da para colcar em todos os menus
     
     
+    // Ao utilizar a collection: a melhor escolha será a "linkedHashMap", 
+    //ela deixa ordenado, não deixa duplicar e tem busca por chave.
+    // serão mais utilizadas no Paciente e Profissional, por cauisa das buscas. Os demais um list resolve.
+    
     
     public static void main(String[] args) {
         int opcao = -1;
@@ -350,7 +354,7 @@ public class Main {
             System.out.println("Paciente nao encontrado.");
             return;
         }
-        if (!pacientes[idxPac].ativo) {
+        if (!pacientes[idxPac].getAtivo()) {
             System.out.println("Paciente inativo. Nao e possivel agendar.");
             return;
         }
@@ -419,7 +423,7 @@ public class Main {
             System.out.println("Paciente nao encontrado.");
             return;
         }
-        if (!pacientes[idxPac].ativo) {
+        if (!pacientes[idxPac].getAtivo()) {
             System.out.println("Paciente inativo. Nao e possivel agendar.");
             return;
         }
@@ -808,7 +812,7 @@ public class Main {
         String cpfPac = consultas[idxConsulta].cpfPaciente;
         int idxPac = buscarIndicePaciente(cpfPac);
 
-        boolean temConvenio = !pacientes[idxPac].convenioNome.equals("");
+        boolean temConvenio = !pacientes[idxPac].getConvenioNome().equals("");
         boolean ehRetorno = consultas[idxConsulta].tipo.equals("retorno");
 
         double desconto = 0;

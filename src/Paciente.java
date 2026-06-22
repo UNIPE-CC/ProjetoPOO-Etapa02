@@ -4,34 +4,30 @@ public class Paciente extends Pessoa{
     private boolean ativo;
 
     public Paciente(String nome, String cpf) {
-        setNome(nome);
-        setCpf(cpf);
+        super(nome, cpf);
         this.idade = 0;
-        setTelefone("");
         this.convenioNome = "";
         this.ativo = true;
     }
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
-        setNome(nome);
-        setCpf(cpf);
+        super(nome, cpf, telefone);
         this.idade = idade;
-        setTelefone(telefone);
         this.convenioNome = "";
         this.ativo = true;
     }
 
     // construtor com todos os dados
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
-        setNome(nome);
-        setCpf(cpf);
+        super(nome, cpf, telefone);
         this.idade = idade;
-        setTelefone(telefone);
         this.convenioNome = convenioNome;
         this.ativo = true;
     }
 
     // atualiza so idade e telefone
+    // idade e conveio pode ser criado um metodo get e set
+    
     public void complementar(int idade, String telefone) {
         this.idade = idade;
         setTelefone(telefone);
@@ -48,6 +44,22 @@ public class Paciente extends Pessoa{
         this.ativo = false;
     }
 
+    public boolean getAtivo(){
+        return ativo;
+    }
+    
+    public void setAtivo(boolean ativo){
+        this.ativo = ativo;
+    }
+    
+    public String getConvenioNome(){
+        return convenioNome;
+    }
+    
+    public void setConvenioNome(String convenioNome){
+        this.convenioNome = convenioNome;
+    }
+    
     @Override
     public String exibirResumo() {
         String status = "Sim";
