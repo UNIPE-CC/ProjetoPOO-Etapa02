@@ -4,6 +4,29 @@ public abstract class Pessoa {
     private String telefone;
     private String dataNascimento;
     
+    // construtores para ser utilizados na classe Paciente+-
+    public Pessoa(){
+        
+    }
+    
+    public Pessoa(String nome, String cpf){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = ""; // nesse construtor inicializa sem o numero do telefone.
+    }
+    
+    public Pessoa(String nome, String cpf, String telefone){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+    }
+    
+    public Pessoa(String nome, String cpf, String telefone, String dataNascimento){
+        this.nome = nome;
+        this.cpf = cpf;
+        this.telefone = telefone;
+        this.dataNascimento = dataNascimento;
+    }
     
     public String getNome(){
         return nome;
