@@ -105,14 +105,26 @@ public class Main {
         if (tipo == 1) {
             pacientes[totalPacientes] = new Paciente(nome, cpf);
         } else if (tipo == 2) {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("Insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);    
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);
         } else {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             System.out.print("Convenio: ");
@@ -135,8 +147,15 @@ public class Main {
         System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
         int tipo = Integer.parseInt(sc.nextLine());
 
-        System.out.print("Idade: ");
-        int idade = Integer.parseInt(sc.nextLine());
+        int idade;
+        do{
+            System.out.print("Idade: ");
+            idade = Integer.parseInt(sc.nextLine());
+            if(idade > 130 || idade < 0){
+                System.out.println("Insira uma idade valida");
+            }
+        }while(idade > 130 || idade < 0);
+
         System.out.print("Telefone: ");
         String tel = sc.nextLine();
 
