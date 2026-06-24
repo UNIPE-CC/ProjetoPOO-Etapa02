@@ -22,4 +22,9 @@ public class Convenio {
     public int getCobertura() {
         return cobertura;
     }
+
+    public void exibirResumo(){
+        System.out.println("nome: "+ nome+"\n" +
+                "cobertura: "+cobertura);
+    }
 }
