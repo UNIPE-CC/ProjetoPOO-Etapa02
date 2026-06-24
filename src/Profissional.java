@@ -47,7 +47,7 @@ public abstract class Profissional extends Pessoa {
 
     // so nome e especialidade
     public Profissional(String nome, String especialidade) {
-        this.nome = nome;
+        super(nome);
         this.especialidade = especialidade;
         this.registroProfissional = "";
         this.valorConsulta = 0;
@@ -111,13 +111,16 @@ public abstract class Profissional extends Pessoa {
         return false;
     }
 
+    public abstract String registrarEspecifico();
+
+    @Overwrite
     public String exibirResumo() {
         String dias = "";
         for (int i = 0; i < totalDias; i++) {
             if (i > 0) dias = dias + ", ";
             dias = dias + diasDisponiveis[i];
         }
-        return "Nome: " + nome + " | Espec: " + especialidade + " | Reg: " + registroProfissional
-                + " | Valor: R$" + valorConsulta + " | Dias: " + dias;
+        return "Espec: " + especialidade + " | Reg: " + registroProfissional
+                + " | Valor: R$" + valorConsulta;
     }
 }
