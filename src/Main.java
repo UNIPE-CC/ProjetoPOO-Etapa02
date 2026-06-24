@@ -21,6 +21,17 @@ public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
+    
+    
+    //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
+    // da para colcar em todos os menus
+    
+    
+    // Ao utilizar a collection: a melhor escolha será a "linkedHashMap", 
+    //ela deixa ordenado, não deixa duplicar e tem busca por chave.
+    // serão mais utilizadas no Paciente e Profissional, por cauisa das buscas. Os demais um list resolve.
+    
+    
     public static void main(String[] args) {
         int opcao = -1;
         while (opcao != 0) {
@@ -34,7 +45,7 @@ public class Main {
             System.out.println("0 - Sair");
             System.out.print("Escolha: ");
             opcao = Integer.parseInt(sc.nextLine());
-
+            
             switch (opcao) {
                 case 1: menuPacientes(); break;
                 case 2: menuProfissionais(); break;
@@ -44,7 +55,7 @@ public class Main {
                 case 6: menuRelatorios(); break;
                 case 0: break;
                 default: System.out.println("Opcao invalida!"); break;
-            }
+            }                                               
         }
         System.out.println("Sistema encerrado.");
     }
@@ -174,7 +185,7 @@ public class Main {
 
     public static int buscarIndicePaciente(String cpf) {
         for (int i = 0; i < totalPacientes; i++) {
-            if (pacientes[i].cpf.equals(cpf)) return i;
+            if (pacientes[i].getCpf().equals(cpf)) return i;
         }
         return -1;
     }
@@ -343,7 +354,7 @@ public class Main {
             System.out.println("Paciente nao encontrado.");
             return;
         }
-        if (!pacientes[idxPac].ativo) {
+        if (!pacientes[idxPac].getAtivo()) {
             System.out.println("Paciente inativo. Nao e possivel agendar.");
             return;
         }
@@ -412,7 +423,7 @@ public class Main {
             System.out.println("Paciente nao encontrado.");
             return;
         }
-        if (!pacientes[idxPac].ativo) {
+        if (!pacientes[idxPac].getAtivo()) {
             System.out.println("Paciente inativo. Nao e possivel agendar.");
             return;
         }
@@ -801,7 +812,7 @@ public class Main {
         String cpfPac = consultas[idxConsulta].cpfPaciente;
         int idxPac = buscarIndicePaciente(cpfPac);
 
-        boolean temConvenio = !pacientes[idxPac].convenioNome.equals("");
+        boolean temConvenio = !pacientes[idxPac].getConvenioNome().equals("");
         boolean ehRetorno = consultas[idxConsulta].tipo.equals("retorno");
 
         double desconto = 0;
