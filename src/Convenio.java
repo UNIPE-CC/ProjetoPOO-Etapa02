@@ -1,30 +1,58 @@
+import java.util.HashSet;
+import java.util.Set;
+
 public class Convenio {
     private String nome;
-    private int cobertura;
+    private double cobertura;
+    private Set<Paciente> pacientes;
 
-    public Convenio (String nome, int cobertura){
+    public Convenio (String nome, double cobertura){
         this.nome = nome;
-        this.cobertura = cobertura;
+        this.cobertura = cobertura/100;
+        this.pacientes = new HashSet<>();
     }
 
     public void setNome(String nome) {
         this.nome = nome;
     }
-
     public String getNome() {
         return nome;
     }
 
-    public void setCobertura(int cobertura) {
-        this.cobertura = cobertura;
+    public void setCobertura(double cobertura) {
+        this.cobertura = cobertura/100;
     }
-
-    public int getCobertura() {
+    public double getCobertura() {
         return cobertura;
     }
 
+    public void addPaciente (Paciente paciente) {
+        this.pacientes.add(paciente);
+    }
+
+    public void RemoverPacientePorCpf (String cpf) {
+        for(Paciente paciente: this.pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                this.pacientes.remove(paciente);
+            }
+        }
+    }
+
+    public void pesquisarPacientePorCpf (String cpf) {
+        for(Paciente paciente: this.pacientes) {
+            if (paciente.getCpf().equals(cpf)) {
+                System.out.println(paciente.exibirResumo());
+            }
+        }
+    }
+
     public void exibirResumo(){
-        System.out.println("nome: "+ nome+"\n" +
-                "cobertura: "+cobertura);
+        System.out.println("Convênio: "+ this.nome+"\n" +
+                "cobertura: "+ (this.cobertura * 100) +"% \n" +
+                "Pacientes:");
+        for(Paciente paciente : this.pacientes) {
+            String nomePaciente = paciente.getNome();
+            System.out.println(nomePaciente);
+        }
     }
 }
