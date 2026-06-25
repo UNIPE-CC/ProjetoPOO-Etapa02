@@ -1,3 +1,5 @@
+<<<<<<< HEAD
+=======
 # Projeto de Refatoração com Implementação de POO - Sistema Clínico
 
 ## Objetivos
@@ -162,4 +164,5 @@ A branch `main` deve conter apenas versões finais e funcionais do sistema.
 * Não enviar código que não compile.
 * Testar todas as alterações antes de solicitar merge.
 * Utilizar mensagens de commit claras e objetivas.
+>>>>>>> 548ec144ad100357b4adf836c56c2fd1efdef21b
 
