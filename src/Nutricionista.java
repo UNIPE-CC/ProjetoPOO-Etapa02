@@ -21,8 +21,7 @@ public class Nutricionista extends Profissional{
 
     @Override
     public void registrarEspecifico(Atendimento atendimento) {
-        atendimento.setDetalhesEspecificos("Plano Alimentar: " + this.planoAlimentar);
-        return "Plano alimentar adicionado ao atendimento.";
+        atendimento.setObservacoes("Plano Alimentar: " + this.planoAlimentar);
     }
 }
 

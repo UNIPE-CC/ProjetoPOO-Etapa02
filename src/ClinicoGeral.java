@@ -20,6 +20,6 @@ public class ClinicoGeral extends Profissional {
     
     @Override
     public void registrarEspecifico(Atendimento atendimento){
-        return;
+        atendimento.setObservacoes(atendimento.getObservacoes() + "Encaminhamento :" + encaminhamento);
     }
 }

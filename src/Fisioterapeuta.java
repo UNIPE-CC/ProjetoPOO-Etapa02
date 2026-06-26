@@ -30,6 +30,6 @@ public class Fisioterapeuta extends Profissional{
     
     @Override
     public void registrarEspecifico(Atendimento atendimento){
-        return atendimento;
+        atendimento.setObservacoes(atendimento.getObservacoes() + "Total Sessoes: " + totalSessoesPrevistas);
     }
 }

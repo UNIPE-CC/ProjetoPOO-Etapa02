@@ -21,6 +21,6 @@ public class Psicologo extends Profissional {
     
     @Override
     public void registrarEspecifico(Atendimento atendimento){
-        return ("Qual o registro: ");
+        atendimento.setObservacoes(atendimento.getObservacoes() + " | Abordagem: " + abordagem);
     }
 }

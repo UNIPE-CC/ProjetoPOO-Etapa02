@@ -1,9 +1,50 @@
 public class Atendimento {
-    public int indiceConsulta;
-    public String observacoes;
-    public String diagnostico;
-    public String[] procedimentos;
-    public int totalProcedimentos;
+    private int indiceConsulta;
+    private String observacoes;
+    private String diagnostico;
+    private String[] procedimentos;
+    private int totalProcedimentos;
+
+    public int getIndiceConsulta(){
+        return indiceConsulta;
+    }
+    
+    public void setIndiceConsulta(int indiceConsulta){
+        this.indiceConsulta = indiceConsulta;
+    }
+    
+    public String getObservacoes(){
+        return observacoes;
+    }
+    
+    public void setObservacoes(String observacoes){
+        this.observacoes = observacoes;
+    }
+    
+    public String getDiagnostico(){
+        return diagnostico;
+    }
+    
+    public void setDiagnostico(String diagnostico){
+        this.diagnostico = diagnostico;
+    }
+    
+    public String[] getProcedimentos(){
+        return procedimentos;
+    }
+    
+    public void setProcedimentos(String[] procedimentos){
+        this.procedimentos = procedimentos;
+    }
+    
+    public int getTotalProcedimentos(){
+        return totalProcedimentos;
+    }
+    
+    public void setTotalProcedimentos(int totalProcedimentos){
+        this.totalProcedimentos = totalProcedimentos;
+    }
+    
 
     // registro basico - so observacoes
     public Atendimento(int indiceConsulta, String observacoes) {
