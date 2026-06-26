@@ -1,9 +1,8 @@
 public class Psicologo extends Profissional {
     private String abordagem;
     
-    public psicologo(String nome){
-        super(nome, "");
-        this.abordagem = abordagem;
+    public Psicologo(String nome){
+        super(nome, "psicologia");
     }
     
     public String getAbordagem(){
@@ -16,11 +15,12 @@ public class Psicologo extends Profissional {
     
     @Override
     public String exibirResumo() {
-        return "Espec: " + super(especialidade) + " | Reg: " + super(registroProfissional) + " | Valor: R$" + super(valorConsulta);
+        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional()
+                + " | Valor: R$" + getValorConsulta() + "| Abordagem: " + this.abordagem;
     }
     
     @Override
-    public String registrarEspecifico(Atendimento atendimento){
+    public void registrarEspecifico(Atendimento atendimento){
         return ("Qual o registro: ");
     }
 }

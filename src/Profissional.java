@@ -45,6 +45,10 @@ public abstract class Profissional extends Pessoa {
         this.totalDias = totalDias;
     }
 
+    public Profissional(){
+        
+    }
+    
     // so nome e especialidade
     public Profissional(String nome, String especialidade) {
         super(nome, "");           //o cpf foi dedixado com variavel default
@@ -110,7 +114,7 @@ public abstract class Profissional extends Pessoa {
         return false;
     }
 
-    public abstract String registrarEspecifico();
+    public abstract void registrarEspecifico(Atendimento atendimento);
 
     @Override
     public String exibirResumo() {
