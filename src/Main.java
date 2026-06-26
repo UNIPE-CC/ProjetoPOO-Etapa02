@@ -1,16 +1,16 @@
 import java.util.Scanner;
 
 public class Main {
-    static Paciente[] pacientes = new Paciente[100];
+    static Paciente[] pacientes = new Paciente[100];                //arraylist
     static int totalPacientes = 0;
 
-    static Profissional[] profissionais = new Profissional[50];
+    static Profissional[] profissionais = new Profissional[50];      //arraylist
     static int totalProfissionais = 0;
 
-    static Consulta[] consultas = new Consulta[200];
+    static Consulta[] consultas = new Consulta[200];                //arraylist
     static int totalConsultas = 0;
 
-    static Atendimento[] atendimentos = new Atendimento[200];
+    static Atendimento[] atendimentos = new Atendimento[200];       //arraylist
     static int totalAtendimentos = 0;
 
     static Pagamento[] pagamentos = new Pagamento[200];
@@ -26,10 +26,6 @@ public class Main {
     //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
     // da para colcar em todos os menus
     
-    
-    // Ao utilizar a collection: a melhor escolha será a "linkedHashMap", 
-    //ela deixa ordenado, não deixa duplicar e tem busca por chave.
-    // serão mais utilizadas no Paciente e Profissional, por cauisa das buscas. Os demais um list resolve.
     
     
     public static void main(String[] args) {
@@ -103,21 +99,33 @@ public class Main {
         int tipo = Integer.parseInt(sc.nextLine());
 
         if (tipo == 1) {
-            pacientes[totalPacientes] = new Paciente(nome, cpf);
+            pacientes[totalPacientes] = new Paciente(nome, cpf);                                        //hashSet
         } else if (tipo == 2) {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("Insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);    
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
-            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);                    //hashSet
         } else {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             System.out.print("Convenio: ");
             String conv = sc.nextLine();
-            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel, conv);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel, conv);  //hashSet
         }
         totalPacientes++;
         System.out.println("Paciente cadastrado com sucesso!");
@@ -135,17 +143,24 @@ public class Main {
         System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
         int tipo = Integer.parseInt(sc.nextLine());
 
-        System.out.print("Idade: ");
-        int idade = Integer.parseInt(sc.nextLine());
+        int idade;
+        do{
+            System.out.print("Idade: ");
+            idade = Integer.parseInt(sc.nextLine());
+            if(idade > 130 || idade < 0){
+                System.out.println("Insira uma idade valida");
+            }
+        }while(idade > 130 || idade < 0);
+
         System.out.print("Telefone: ");
         String tel = sc.nextLine();
 
         if (tipo == 1) {
-            pacientes[idx].complementar(idade, tel);
+            pacientes[idx].complementar(idade, tel);                        //hashMap
         } else {
             System.out.print("Convenio: ");
             String conv = sc.nextLine();
-            pacientes[idx].complementar(idade, tel, conv);
+            pacientes[idx].complementar(idade, tel, conv);      //hashMap
         }
         System.out.println("Cadastro atualizado!");
     }
@@ -157,7 +172,7 @@ public class Main {
         if (idx == -1) {
             System.out.println("Paciente nao encontrado.");
         } else {
-            System.out.println(pacientes[idx].exibirResumo());
+            System.out.println(pacientes[idx].exibirResumo());                  //hashMap
         }
     }
 
@@ -230,13 +245,13 @@ public class Main {
         int tipo = Integer.parseInt(sc.nextLine());
 
         if (tipo == 1) {
-            profissionais[totalProfissionais] = new Profissional(nome, esp);
+            profissionais[totalProfissionais] = new Profissional(nome, esp);        //hashMap
         } else if (tipo == 2) {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
             System.out.print("Valor consulta: ");
             double valor = Double.parseDouble(sc.nextLine());
-            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor);
+            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor);    //hashMap
         } else {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
@@ -249,7 +264,7 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor, dias, qtd);
+            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor, dias, qtd); //hashMap
         }
         totalProfissionais++;
         System.out.println("Profissional cadastrado!");
@@ -273,7 +288,7 @@ public class Main {
         double valor = Double.parseDouble(sc.nextLine());
 
         if (tipo == 1) {
-            profissionais[idx].atualizar(reg, valor);
+            profissionais[idx].atualizar(reg, valor);                   //hashMap
         } else {
             System.out.print("Quantos dias? ");
             int qtd = Integer.parseInt(sc.nextLine());
@@ -282,7 +297,7 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-            profissionais[idx].atualizar(reg, valor, dias, qtd);
+            profissionais[idx].atualizar(reg, valor, dias, qtd);    //hashMap
         }
         System.out.println("Profissional atualizado!");
     }
@@ -302,7 +317,7 @@ public class Main {
         String esp = sc.nextLine();
         boolean achou = false;
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].especialidade.equals(esp)) {
+            if (profissionais[i].getEspecialidade().equals(esp)) {
                 System.out.println(profissionais[i].exibirResumo());
                 achou = true;
             }
@@ -312,7 +327,7 @@ public class Main {
 
     public static int buscarIndiceProfissional(String nome) {
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].nome.equals(nome)) return i;
+            if (profissionais[i].getNome().equals(nome)) return i;
         }
         return -1;
     }
@@ -366,7 +381,7 @@ public class Main {
             System.out.println("Profissional nao encontrado.");
             return;
         }
-        if (profissionais[idxProf].valorConsulta == 0) {
+        if (profissionais[idxProf].getValorConsulta() == 0) {
             System.out.println("Profissional sem valor definido. Nao pode agendar.");
             return;
         }
@@ -440,10 +455,10 @@ public class Main {
         // procura profissional disponivel
         int idxProf = -1;
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].especialidade.equals(esp)
-                    && profissionais[i].valorConsulta > 0
+            if (profissionais[i].getEspecialidade().equals(esp)
+                    && profissionais[i].getValorConsulta() > 0
                     && profissionais[i].atendeNoDia(diaSemana)
-                    && !temConflito(profissionais[i].nome, data, horario)) {
+                    && !temConflito(profissionais[i].getNome(), data, horario)) {
                 idxProf = i;
                 break;
             }
@@ -454,9 +469,9 @@ public class Main {
             return;
         }
 
-        consultas[totalConsultas] = new Consulta(cpf, profissionais[idxProf].nome, data, horario);
+        consultas[totalConsultas] = new Consulta(cpf, profissionais[idxProf].getNome(), data, horario);
         totalConsultas++;
-        System.out.println("Consulta agendada com " + profissionais[idxProf].nome + "!");
+        System.out.println("Consulta agendada com " + profissionais[idxProf].getNome() + "!");
     }
 
     public static void cancelarConsulta() {
@@ -806,7 +821,7 @@ public class Main {
         // obtem valor do profissional
         String nomeProf = consultas[idxConsulta].nomeProfissional;
         int idxProf = buscarIndiceProfissional(nomeProf);
-        double valorBase = profissionais[idxProf].valorConsulta;
+        double valorBase = profissionais[idxProf].getValorConsulta();
 
         // verifica convenio e tipo
         String cpfPac = consultas[idxConsulta].cpfPaciente;

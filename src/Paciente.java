@@ -26,7 +26,7 @@ public class Paciente extends Pessoa{
     }
 
     // atualiza so idade e telefone
-    // idade e conveio pode ser criado um metodo get e set
+    // idade e conveio pode se criado um metodo get e set
     
     public void complementar(int idade, String telefone) {
         this.idade = idade;
@@ -66,8 +66,6 @@ public class Paciente extends Pessoa{
         if (!ativo) {
             status = "Nao";
         }
-        return "Nome: " + getNome() + " | CPF: " + getCpf() + " | Idade: " + idade
-                + " | Tel: " + getTelefone() + " | Convenio: " + convenioNome
-                + " | Ativo: " + status;
+        return "Convenio: " + convenioNome + " | Ativo: " + status;
     }
 }

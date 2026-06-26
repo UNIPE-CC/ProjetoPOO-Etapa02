@@ -86,8 +86,8 @@ public class Relatorio {
     // busca diagnostico de um atendimento pelo indice da consulta
     public static String buscarDiagnostico(int indiceConsulta, Atendimento[] atendimentos, int total) {
         for (int i = 0; i < total; i++) {
-            if (atendimentos[i].indiceConsulta == indiceConsulta) {
-                return atendimentos[i].diagnostico;
+            if (atendimentos[i].getIndiceConsulta() == indiceConsulta) {
+                return atendimentos[i].getDiagnostico();
             }
         }
         return "";
