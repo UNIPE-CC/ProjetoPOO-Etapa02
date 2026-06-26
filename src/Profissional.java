@@ -9,7 +9,7 @@ public abstract class Profissional extends Pessoa {
         return especialidade;
     }
 
-    public void setEspecialidade(String Easton) {
+    public void setEspecialidade(String especialidade) {
         this.especialidade = especialidade;
     }
 
@@ -47,7 +47,7 @@ public abstract class Profissional extends Pessoa {
 
     // so nome e especialidade
     public Profissional(String nome, String especialidade) {
-        super(nome);
+        super(nome, "");           //o cpf foi dedixado com variavel default
         this.especialidade = especialidade;
         this.registroProfissional = "";
         this.valorConsulta = 0;
@@ -56,7 +56,7 @@ public abstract class Profissional extends Pessoa {
     }
 
     public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta) {
-        this.nome = nome;
+        super(nome, "");
         this.especialidade = especialidade;
         this.registroProfissional = registroProfissional;
         this.valorConsulta = valorConsulta;
@@ -65,9 +65,8 @@ public abstract class Profissional extends Pessoa {
     }
 
     // construtor completo com dias
-    public Profissional(String nome, String especialidade, String registroProfissional,
-                        double valorConsulta, String[] dias, int totalDias) {
-        this.nome = nome;
+    public Profissional(String nome, String especialidade, String registroProfissional,double valorConsulta, String[] dias, int totalDias) {
+        super(nome, "");
         this.especialidade = especialidade;
         this.registroProfissional = registroProfissional;
         this.valorConsulta = valorConsulta;

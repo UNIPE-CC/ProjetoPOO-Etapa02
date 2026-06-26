@@ -1,16 +1,16 @@
 import java.util.Scanner;
 
 public class Main {
-    static Paciente[] pacientes = new Paciente[100];
+    static Paciente[] pacientes = new Paciente[100];                //arraylist
     static int totalPacientes = 0;
 
-    static Profissional[] profissionais = new Profissional[50];
+    static Profissional[] profissionais = new Profissional[50];      //arraylist
     static int totalProfissionais = 0;
 
-    static Consulta[] consultas = new Consulta[200];
+    static Consulta[] consultas = new Consulta[200];                //arraylist
     static int totalConsultas = 0;
 
-    static Atendimento[] atendimentos = new Atendimento[200];
+    static Atendimento[] atendimentos = new Atendimento[200];       //arraylist
     static int totalAtendimentos = 0;
 
     static Pagamento[] pagamentos = new Pagamento[200];
@@ -26,10 +26,6 @@ public class Main {
     //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
     // da para colcar em todos os menus
     
-    
-    // Ao utilizar a collection: a melhor escolha será a "linkedHashMap", 
-    //ela deixa ordenado, não deixa duplicar e tem busca por chave.
-    // serão mais utilizadas no Paciente e Profissional, por cauisa das buscas. Os demais um list resolve.
     
     
     public static void main(String[] args) {
@@ -103,7 +99,7 @@ public class Main {
         int tipo = Integer.parseInt(sc.nextLine());
 
         if (tipo == 1) {
-            pacientes[totalPacientes] = new Paciente(nome, cpf);
+            pacientes[totalPacientes] = new Paciente(nome, cpf);                                        //hashSet
         } else if (tipo == 2) {
             int idade;
             do{
@@ -115,7 +111,7 @@ public class Main {
             }while(idade > 130 || idade < 0);    
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
-            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);                    //hashSet
         } else {
             int idade;
             do{
@@ -129,7 +125,7 @@ public class Main {
             String tel = sc.nextLine();
             System.out.print("Convenio: ");
             String conv = sc.nextLine();
-            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel, conv);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel, conv);  //hashSet
         }
         totalPacientes++;
         System.out.println("Paciente cadastrado com sucesso!");
@@ -160,11 +156,11 @@ public class Main {
         String tel = sc.nextLine();
 
         if (tipo == 1) {
-            pacientes[idx].complementar(idade, tel);
+            pacientes[idx].complementar(idade, tel);                        //hashMap
         } else {
             System.out.print("Convenio: ");
             String conv = sc.nextLine();
-            pacientes[idx].complementar(idade, tel, conv);
+            pacientes[idx].complementar(idade, tel, conv);      //hashMap
         }
         System.out.println("Cadastro atualizado!");
     }
@@ -176,7 +172,7 @@ public class Main {
         if (idx == -1) {
             System.out.println("Paciente nao encontrado.");
         } else {
-            System.out.println(pacientes[idx].exibirResumo());
+            System.out.println(pacientes[idx].exibirResumo());                  //hashMap
         }
     }
 
@@ -249,13 +245,13 @@ public class Main {
         int tipo = Integer.parseInt(sc.nextLine());
 
         if (tipo == 1) {
-            profissionais[totalProfissionais] = new Profissional(nome, esp);
+            profissionais[totalProfissionais] = new Profissional(nome, esp);        //hashMap
         } else if (tipo == 2) {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
             System.out.print("Valor consulta: ");
             double valor = Double.parseDouble(sc.nextLine());
-            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor);
+            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor);    //hashMap
         } else {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
@@ -268,7 +264,7 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor, dias, qtd);
+            profissionais[totalProfissionais] = new Profissional(nome, esp, reg, valor, dias, qtd); //hashMap
         }
         totalProfissionais++;
         System.out.println("Profissional cadastrado!");
@@ -292,7 +288,7 @@ public class Main {
         double valor = Double.parseDouble(sc.nextLine());
 
         if (tipo == 1) {
-            profissionais[idx].atualizar(reg, valor);
+            profissionais[idx].atualizar(reg, valor);                   //hashMap
         } else {
             System.out.print("Quantos dias? ");
             int qtd = Integer.parseInt(sc.nextLine());
@@ -301,7 +297,7 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-            profissionais[idx].atualizar(reg, valor, dias, qtd);
+            profissionais[idx].atualizar(reg, valor, dias, qtd);    //hashMap
         }
         System.out.println("Profissional atualizado!");
     }
