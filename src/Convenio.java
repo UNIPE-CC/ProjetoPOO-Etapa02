@@ -2,21 +2,21 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Convenio {
-    private String nome;
+    private String nomeConvenio;
     private double cobertura;
     private Set<Paciente> pacientes;
 
-    public Convenio (String nome, double cobertura){
-        this.nome = nome;
+    public Convenio (String nomeConvenio, double cobertura){
+        this.nomeConvenio = nomeConvenio;
         this.cobertura = cobertura/100;
         this.pacientes = new HashSet<>();
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public void setNomeConvenio(String nomeConvenio) {
+        this.nomeConvenio = nomeConvenio;
     }
-    public String getNome() {
-        return nome;
+    public String getNomeConvenio() {
+        return nomeConvenio;
     }
 
     public void setCobertura(double cobertura) {
@@ -47,7 +47,7 @@ public class Convenio {
     }
 
     public void exibirResumo(){
-        System.out.println("Convênio: "+ this.nome+"\n" +
+        System.out.println("Convênio: "+ this.nomeConvenio+"\n" +
                 "cobertura: "+ (this.cobertura * 100) +"% \n" +
                 "Pacientes:");
         for(Paciente paciente : this.pacientes) {

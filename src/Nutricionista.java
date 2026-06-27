@@ -1,8 +1,8 @@
 public class Nutricionista extends Profissional{
     private String planoAlimentar;
 
-    public Nutricionista(String nome) {
-        super(nome, "nutricionista");
+    public Nutricionista(String nome, String registroProfissional) {
+        super(nome, "nutricionista", registroProfissional);
     }
 
     public String getPlanoAlimentar() {
