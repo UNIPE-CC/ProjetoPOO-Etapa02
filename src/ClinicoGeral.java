@@ -1,8 +1,8 @@
 public class ClinicoGeral extends Profissional {
     private String encaminhamento;
     
-    public ClinicoGeral(String nome){
-        super(nome, "clinico geral");
+    public ClinicoGeral(String nome, String registroProfissional){
+        super(nome, "clinico geral", registroProfissional);
     }
     
     public String getEncaminhamento(){
