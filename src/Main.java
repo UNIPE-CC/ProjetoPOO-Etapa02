@@ -23,7 +23,6 @@ public class Main {
     static Scanner sc = new Scanner(System.in);
 
     
-    
     //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
     // da para colcar em todos os menus
     
@@ -312,11 +311,6 @@ public class Main {
                 //Continuar
             }
         }
-
-
-
-
-
 
         if (idx == -1) {
             System.out.println("Profissional nao encontrado.");
