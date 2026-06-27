@@ -43,6 +43,18 @@ public class Paciente extends Pessoa{
     public void desativar() {
         this.ativo = false;
     }
+    
+    public int getIdade(){
+        return idade;
+    }
+    
+    public void setIdade(int idade) {
+        if (idade < 0 || idade > 130) {
+            System.out.println("Idade invalida");
+            return;
+        }
+        this.idade = idade;
+    }
 
     public boolean getAtivo(){
         return ativo;
