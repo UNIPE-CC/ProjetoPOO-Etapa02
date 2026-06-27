@@ -73,7 +73,7 @@ public abstract class Profissional extends Pessoa {
     }
 
     // construtor completo com dias
-    public Profissional(String nome, String especialidade, String registroProfissional,double valorConsulta, String[] dias, int totalDias) {
+    public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta, String[] dias, int totalDias) {
         super(nome, "");
         setEspecialidade(especialidade);
         setRegistroProfissional(registroProfissional);

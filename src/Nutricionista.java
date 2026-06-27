@@ -4,6 +4,12 @@ public class Nutricionista extends Profissional{
     public Nutricionista(String nome, String registroProfissional) {
         super(nome, "nutricionista", registroProfissional);
     }
+    public Nutricionista(String nome, String registroProfissional, double valor) {
+        super(nome, "nutricionista", registroProfissional, valor);
+    }
+    public Nutricionista(String nome, String registroProfissional, double valorConsulta, String[] dias, int totalDias) {
+        super(nome, "nutricionista", registroProfissional, valorConsulta, dias, totalDias);
+    }
 
     public String getPlanoAlimentar() {
         return planoAlimentar;
