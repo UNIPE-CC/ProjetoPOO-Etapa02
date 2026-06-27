@@ -15,7 +15,7 @@ public class ClinicoGeral extends Profissional {
     
     @Override
     public String exibirResumo() {
-        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() + " | Valor: R$" + getValorConsulta();
+        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() + "Encaminhamento: " + this.encaminhamento +" | Valor: R$" + getValorConsulta();
     }
     
     @Override

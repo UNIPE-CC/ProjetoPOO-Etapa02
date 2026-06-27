@@ -12,7 +12,7 @@ public class Paciente extends Pessoa{
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
         super(nome, cpf, telefone);
-        this.idade = idade;
+        setIdade(idade);
         this.convenioNome = "";
         this.ativo = true;
     }
@@ -20,8 +20,8 @@ public class Paciente extends Pessoa{
     // construtor com todos os dados
     public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
         super(nome, cpf, telefone);
-        this.idade = idade;
-        this.convenioNome = convenioNome;
+        setIdade(idade);
+        setConvenioNome(convenioNome);
         this.ativo = true;
     }
 
@@ -29,15 +29,15 @@ public class Paciente extends Pessoa{
     // idade e conveio pode se criado um metodo get e set
     
     public void complementar(int idade, String telefone) {
-        this.idade = idade;
+        setIdade(idade);
         setTelefone(telefone);
     }
 
     // atualiza tudo incluindo convenio
     public void complementar(int idade, String telefone, String convenioNome) {
-        this.idade = idade;
+        setIdade(idade);
         setTelefone(telefone);
-        this.convenioNome = convenioNome;
+        setConvenioNome(convenioNome);
     }
 
     public void desativar() {
@@ -69,6 +69,9 @@ public class Paciente extends Pessoa{
     }
     
     public void setConvenioNome(String convenioNome){
+        if(convenioNome == null){
+            convenioNome = "";
+        }
         this.convenioNome = convenioNome;
     }
     
