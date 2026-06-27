@@ -3,6 +3,9 @@ public class PagamentoCartao extends Pagamento{
     public PagamentoCartao(int indiceConsulta, double valorFinal, int parcelas) {
         super(indiceConsulta, valorFinal, "cartao", parcelas);
     }
+    public PagamentoCartao (int indiceConsulta, double valorFinal) {
+        super(indiceConsulta, valorFinal, "cartao");
+    }
     
     @Override
     public double calcularValorFinal(){
