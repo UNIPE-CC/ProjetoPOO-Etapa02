@@ -1,17 +1,16 @@
 import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeSet;
 
 public class Main {
+    static Paciente[] pacientes = new Paciente[100];                //arraylist
+    static int totalPacientes = 0;
 
-    static Set<Paciente> pacientes = new TreeSet<>();
+    static Profissional[] profissionais = new Profissional[50];      //arraylist
+    static int totalProfissionais = 0;
 
-    static Set<Profissional> profissionais = new TreeSet<>();
-
-    static Consulta[] consultas = new Consulta[200];
+    static Consulta[] consultas = new Consulta[200];                //arraylist
     static int totalConsultas = 0;
 
-    static Atendimento[] atendimentos = new Atendimento[200];
+    static Atendimento[] atendimentos = new Atendimento[200];       //arraylist
     static int totalAtendimentos = 0;
 
     static Pagamento[] pagamentos = new Pagamento[200];
@@ -22,15 +21,6 @@ public class Main {
 
     static Scanner sc = new Scanner(System.in);
 
-    
-    //da para colocar um tratamento de erro... numberFormaException, tratar entrada de String
-    // da para colcar em todos os menus
-    
-    
-    // Ao utilizar a collection: a melhor escolha será a "linkedHashMap", 
-    //ela deixa ordenado, não deixa duplicar e tem busca por chave.
-    // serão mais utilizadas no Paciente e Profissional, por cauisa das buscas. Os demais um list resolve.
-    
     
     public static void main(String[] args) {
         int opcao = -1;
@@ -94,109 +84,120 @@ public class Main {
         String cpf = sc.nextLine();
 
         // verifica se ja existe
-        for(Paciente paciente : pacientes) {
-            if(paciente.getCpf().equals(cpf)) {
-                System.out.println("CPF ja cadastrado!");
-                return;
-            }
+        if (buscarIndicePaciente(cpf) != -1) {
+            System.out.println("CPF ja cadastrado!");
+            return;
         }
 
         System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
         int tipo = Integer.parseInt(sc.nextLine());
 
         if (tipo == 1) {
-            Paciente paciente = new Paciente(nome, cpf);
-            pacientes.add(paciente);
+            pacientes[totalPacientes] = new Paciente(nome, cpf);                                        //hashSet
         } else if (tipo == 2) {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("Insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);    
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
-
-            Paciente paciente = new Paciente(nome, cpf, idade, tel);
-            pacientes.add(paciente);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel);                    //hashSet
         } else {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
+            int idade;
+            do{
+                System.out.print("Idade: ");
+                idade = Integer.parseInt(sc.nextLine());
+                if(idade > 130 || idade < 0){
+                    System.out.println("insira uma idade valida");
+                }
+            }while(idade > 130 || idade < 0);
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
             System.out.print("Convenio: ");
             String conv = sc.nextLine();
-            Paciente paciente = new Paciente(nome, cpf, idade, tel, conv);
-            pacientes.add(paciente);
+            pacientes[totalPacientes] = new Paciente(nome, cpf, idade, tel, conv);  //hashSet
         }
+        totalPacientes++;
         System.out.println("Paciente cadastrado com sucesso!");
     }
 
-
     public static void complementarPaciente() {
-        //try e catch caso não ache o paciente
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
-
-        for(Paciente paciente :pacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
-                int tipo = Integer.parseInt(sc.nextLine());
-
-                System.out.print("Idade: ");
-                int idade = Integer.parseInt(sc.nextLine());
-                System.out.print("Telefone: ");
-                String tel = sc.nextLine();
-
-                if(tipo == 1) {
-                    paciente.complementar(idade, tel);
-                } else {
-                    System.out.print("Convenio: ");
-                    String conv = sc.nextLine();
-
-                    paciente.complementar(idade, tel, conv);
-                }
-                System.out.println("Cadastro atualizado!");
-                return;
-            }
+        int idx = buscarIndicePaciente(cpf);
+        if (idx == -1) {
+            System.out.println("Paciente nao encontrado.");
+            return;
         }
-        System.out.println("Nenhum paciente encontrado");
 
+        System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
+        int tipo = Integer.parseInt(sc.nextLine());
+
+        int idade;
+        do{
+            System.out.print("Idade: ");
+            idade = Integer.parseInt(sc.nextLine());
+            if(idade > 130 || idade < 0){
+                System.out.println("Insira uma idade valida");
+            }
+        }while(idade > 130 || idade < 0);
+
+        System.out.print("Telefone: ");
+        String tel = sc.nextLine();
+
+        if (tipo == 1) {
+            pacientes[idx].complementar(idade, tel);                        //hashMap
+        } else {
+            System.out.print("Convenio: ");
+            String conv = sc.nextLine();
+            pacientes[idx].complementar(idade, tel, conv);      //hashMap
+        }
+        System.out.println("Cadastro atualizado!");
     }
 
     public static void buscarPaciente() {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
-
-        for (Paciente paciente : pacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                System.out.println(paciente.exibirResumo());
-                return;
-            }
+        int idx = buscarIndicePaciente(cpf);
+        if (idx == -1) {
+            System.out.println("Paciente nao encontrado.");
+        } else {
+            System.out.println(pacientes[idx].exibirResumo());                  //hashMap
         }
-        System.out.println("Nenhum paciente encontrado");
     }
 
     public static void listarPacientes() {
-        if (pacientes.size() == 0) {
+        if (totalPacientes == 0) {
             System.out.println("Nenhum paciente cadastrado.");
             return;
         }
-        for (Paciente paciente : pacientes) {
-            System.out.println(paciente.exibirResumo());
+        for (int i = 0; i < totalPacientes; i++) {
+            System.out.println(pacientes[i].exibirResumo());
         }
     }
 
     public static void desativarPaciente() {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
-
-        for (Paciente paciente : pacientes) {
-            if (paciente.getCpf().equals(cpf)) {
-                paciente.desativar();
-                System.out.println("Paciente desativado.");
-                return;
-            }
+        int idx = buscarIndicePaciente(cpf);
+        if (idx == -1) {
+            System.out.println("Paciente nao encontrado.");
+        } else {
+            pacientes[idx].desativar();
+            System.out.println("Paciente desativado.");
         }
-        System.out.println("Paciente nao encontrado.");
     }
 
+    public static int buscarIndicePaciente(String cpf) {
+        for (int i = 0; i < totalPacientes; i++) {
+            if (pacientes[i].getCpf().equals(cpf)) return i;
+        }
+        return -1;
+    }
 
     // ---- PROFISSIONAIS ----
 
@@ -236,42 +237,17 @@ public class Main {
 
         System.out.print("Tipo (1-Minimo / 2-Com registro e valor / 3-Completo): ");
         int tipo = Integer.parseInt(sc.nextLine());
+        
+        Profissional prof = profissionalEspecialidade(nome, esp);
 
         if (tipo == 1) {
-            if (esp.equals("clinica geral")) {
-                profissionais.add(new ClinicoGeral(nome, esp));
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionais.add(new Fisioterapeuta(nome, esp));
-
-            } else if (esp.equals("psicologia")) {
-                profissionais.add(new Psicologo(nome, esp));
-
-            } else if (esp.equals("nutricao")) {
-                profissionais.add(new Nutricionista(nome, esp));
-
-            }
 
         } else if (tipo == 2) {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
             System.out.print("Valor consulta: ");
             double valor = Double.parseDouble(sc.nextLine());
-
-            if (esp.equals("clinica geral")) {
-                profissionais.add(new ClinicoGeral(nome, esp, reg, valor));
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionais.add(new Fisioterapeuta(nome, esp, reg, valor));
-
-            } else if (esp.equals("psicologia")) {
-                profissionais.add(new Psicologo(nome, esp, reg, valor));
-
-            } else if (esp.equals("nutricao")) {
-                profissionais.add(new Nutricionista(nome, esp, reg, valor));
-
-            }
-
+            prof.atualizar(reg, valor);    //hashMap
         } else {
             System.out.print("Registro: ");
             String reg = sc.nextLine();
@@ -284,34 +260,32 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-
-            if (esp.equals("clinica geral")) {
-                profissionais.add(new ClinicoGeral(nome, esp, reg, valor, dias, qtd));
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionais.add(new Fisioterapeuta(nome, esp, reg, valor, dias, qtd));
-
-            } else if (esp.equals("psicologia")) {
-                profissionais.add(new Psicologo(nome, esp, reg, valor, dias, qtd));
-
-            } else if (esp.equals("nutricao")) {
-                profissionais.add(new Nutricionista(nome, esp, reg, valor, dias, qtd));
-
-            }
+            prof.atualizar(reg, valor, dias, qtd); //hashMap
         }
+        profissionais[totalProfissionais] = prof;
+        totalProfissionais++;
         System.out.println("Profissional cadastrado!");
+    }
+    
+    public static Profissional profissionalEspecialidade(String nome, String especialidade) {
+        switch (especialidade.toLowerCase()) {
+            case "psicologia":
+                return new Psicologo(nome);
+            case "fisioterapia":
+                return new Fisioterapeuta(nome);
+            case "nutricao":
+                return new Nutricionista(nome);
+            case "clinica geral":
+                return new ClinicoGeral(nome);
+            default:
+                return null;
+        }
     }
 
     public static void atualizarProfissional() {
-        System.out.print("CPF do profissional: ");
-        String cpf = sc.nextLine();
-
-        for(Profissional profissional : profissionais) {
-            if (profissional.getCpf().equals(cpf)) {
-                //Continuar
-            }
-        }
-
+        System.out.print("Nome do profissional: ");
+        String nome = sc.nextLine();
+        int idx = buscarIndiceProfissional(nome);
         if (idx == -1) {
             System.out.println("Profissional nao encontrado.");
             return;
@@ -326,7 +300,7 @@ public class Main {
         double valor = Double.parseDouble(sc.nextLine());
 
         if (tipo == 1) {
-            profissionais[idx].atualizar(reg, valor);
+            profissionais[idx].atualizar(reg, valor);                   //hashMap
         } else {
             System.out.print("Quantos dias? ");
             int qtd = Integer.parseInt(sc.nextLine());
@@ -335,7 +309,7 @@ public class Main {
                 System.out.print("Dia " + (i+1) + ": ");
                 dias[i] = sc.nextLine();
             }
-            profissionais[idx].atualizar(reg, valor, dias, qtd);
+            profissionais[idx].atualizar(reg, valor, dias, qtd);    //hashMap
         }
         System.out.println("Profissional atualizado!");
     }
@@ -355,7 +329,7 @@ public class Main {
         String esp = sc.nextLine();
         boolean achou = false;
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].especialidade.equals(esp)) {
+            if (profissionais[i].getEspecialidade().equals(esp)) {
                 System.out.println(profissionais[i].exibirResumo());
                 achou = true;
             }
@@ -365,7 +339,7 @@ public class Main {
 
     public static int buscarIndiceProfissional(String nome) {
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].nome.equals(nome)) return i;
+            if (profissionais[i].getNome().equals(nome)) return i;
         }
         return -1;
     }
@@ -402,23 +376,15 @@ public class Main {
     public static void agendarComProfissional() {
         System.out.print("CPF do paciente: ");
         String cpf = sc.nextLine();
-
-        for (Paciente paciente : pacientes) {
-            if (paciente.getCpf().equals(cpf)){
-                if (!paciente.getAtivo()) {
-                    System.out.println("Paciente inativo. Nao e possivel agendar.");
-                    return;
-                }
-                System.out.print("Nome do profissional: ");
-                String nomeProf = sc.nextLine();
-                // Continuar
-
-            }
+        int idxPac = buscarIndicePaciente(cpf);
+        if (idxPac == -1) {
             System.out.println("Paciente nao encontrado.");
             return;
         }
-
-
+        if (!pacientes[idxPac].getAtivo()) {
+            System.out.println("Paciente inativo. Nao e possivel agendar.");
+            return;
+        }
 
         System.out.print("Nome do profissional: ");
         String nomeProf = sc.nextLine();
@@ -427,7 +393,7 @@ public class Main {
             System.out.println("Profissional nao encontrado.");
             return;
         }
-        if (profissionais[idxProf].valorConsulta == 0) {
+        if (profissionais[idxProf].getValorConsulta() == 0) {
             System.out.println("Profissional sem valor definido. Nao pode agendar.");
             return;
         }
@@ -501,10 +467,10 @@ public class Main {
         // procura profissional disponivel
         int idxProf = -1;
         for (int i = 0; i < totalProfissionais; i++) {
-            if (profissionais[i].especialidade.equals(esp)
-                    && profissionais[i].valorConsulta > 0
+            if (profissionais[i].getEspecialidade().equals(esp)
+                    && profissionais[i].getValorConsulta() > 0
                     && profissionais[i].atendeNoDia(diaSemana)
-                    && !temConflito(profissionais[i].nome, data, horario)) {
+                    && !temConflito(profissionais[i].getNome(), data, horario)) {
                 idxProf = i;
                 break;
             }
@@ -515,9 +481,9 @@ public class Main {
             return;
         }
 
-        consultas[totalConsultas] = new Consulta(cpf, profissionais[idxProf].nome, data, horario);
+        consultas[totalConsultas] = new Consulta(cpf, profissionais[idxProf].getNome(), data, horario);
         totalConsultas++;
-        System.out.println("Consulta agendada com " + profissionais[idxProf].nome + "!");
+        System.out.println("Consulta agendada com " + profissionais[idxProf].getNome() + "!");
     }
 
     public static void cancelarConsulta() {
@@ -867,7 +833,7 @@ public class Main {
         // obtem valor do profissional
         String nomeProf = consultas[idxConsulta].nomeProfissional;
         int idxProf = buscarIndiceProfissional(nomeProf);
-        double valorBase = profissionais[idxProf].valorConsulta;
+        double valorBase = profissionais[idxProf].getValorConsulta();
 
         // verifica convenio e tipo
         String cpfPac = consultas[idxConsulta].cpfPaciente;
