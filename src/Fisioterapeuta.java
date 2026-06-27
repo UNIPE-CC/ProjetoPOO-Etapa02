@@ -5,6 +5,12 @@ public class Fisioterapeuta extends Profissional{
     public Fisioterapeuta(String nome, String registroProfissional){
         super(nome, "fisioterapia", registroProfissional);
     }
+    public Fisioterapeuta(String nome, String registroProfissional, double valor) {
+        super(nome, "fisioterapia", registroProfissional, valor);
+    }
+    public Fisioterapeuta(String nome, String registroProfissional,double valorConsulta, String[] dias, int totalDias) {
+        super(nome, "fisioterapia", registroProfissional, valorConsulta, dias, totalDias);
+    }
     
     public int getTotalSessoesPrevistas(){
         return totalSessoesPrevistas;
