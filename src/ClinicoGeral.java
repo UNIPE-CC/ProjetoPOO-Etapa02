@@ -1,8 +1,8 @@
 public class ClinicoGeral extends Profissional {
     private String encaminhamento;
     
-    public ClinicoGeral(String nome){
-        super(nome, "clinico geral");
+    public ClinicoGeral(String nome, String registroProfissional){
+        super(nome, "clinico geral", registroProfissional);
     }
     
     public String getEncaminhamento(){
@@ -15,7 +15,7 @@ public class ClinicoGeral extends Profissional {
     
     @Override
     public String exibirResumo() {
-        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() + " | Valor: R$" + getValorConsulta();
+        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() + "Encaminhamento: " + this.encaminhamento +" | Valor: R$" + getValorConsulta();
     }
     
     @Override

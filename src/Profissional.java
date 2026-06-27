@@ -10,6 +10,10 @@ public abstract class Profissional extends Pessoa {
     }
 
     public void setEspecialidade(String especialidade) {
+        if (!especialidadeValida(especialidade)) {
+            System.out.println("Especialidade invalida.");
+            return;
+        }
         this.especialidade = especialidade;
     }
 
@@ -26,6 +30,10 @@ public abstract class Profissional extends Pessoa {
     }
 
     public void setValorConsulta(double valorConsulta) {
+        if(valorConsulta < 0){
+            System.out.println("Valor invalido");
+            return;
+        }
         this.valorConsulta = valorConsulta;
     }
 
@@ -44,16 +52,12 @@ public abstract class Profissional extends Pessoa {
     public void setTotalDias(int totalDias) {
         this.totalDias = totalDias;
     }
-
-    public Profissional(){
-        
-    }
     
     // so nome e especialidade
-    public Profissional(String nome, String especialidade) {
-        super(nome, "");           //o cpf foi dedixado com variavel default
-        this.especialidade = especialidade;
-        this.registroProfissional = "";
+    public Profissional(String nome, String especialidade, String registroProfissional) {
+        super(nome, "");           //o cpf foi dedixado com variavdefaultel 
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
         this.valorConsulta = 0;
         this.diasDisponiveis = new String[7];
         this.totalDias = 0;
@@ -61,9 +65,9 @@ public abstract class Profissional extends Pessoa {
 
     public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta) {
         super(nome, "");
-        this.especialidade = especialidade;
-        this.registroProfissional = registroProfissional;
-        this.valorConsulta = valorConsulta;
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
+        setValorConsulta(valorConsulta);
         this.diasDisponiveis = new String[7];
         this.totalDias = 0;
     }
@@ -71,25 +75,25 @@ public abstract class Profissional extends Pessoa {
     // construtor completo com dias
     public Profissional(String nome, String especialidade, String registroProfissional,double valorConsulta, String[] dias, int totalDias) {
         super(nome, "");
-        this.especialidade = especialidade;
-        this.registroProfissional = registroProfissional;
-        this.valorConsulta = valorConsulta;
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
+        setValorConsulta(valorConsulta);
         this.diasDisponiveis = new String[7];
-        this.totalDias = totalDias;
+        setTotalDias(totalDias);
         for (int i = 0; i < totalDias; i++) {
             this.diasDisponiveis[i] = dias[i];
         }
     }
 
     public void atualizar(String registro, double valor) {
-        this.registroProfissional = registro;
-        this.valorConsulta = valor;
+        setRegistroProfissional(registro);
+        setValorConsulta(valor);
     }
 
     public void atualizar(String registro, double valor, String[] dias, int totalDias) {
-        this.registroProfissional = registro;
-        this.valorConsulta = valor;
-        this.totalDias = totalDias;
+        setRegistroProfissional(registro);
+        setValorConsulta(valor);
+        setTotalDias(totalDias);
         for (int i = 0; i < totalDias; i++) {
             this.diasDisponiveis[i] = dias[i];
         }

@@ -1,8 +1,8 @@
 public class Psicologo extends Profissional {
     private String abordagem;
     
-    public Psicologo(String nome){
-        super(nome, "psicologia");
+    public Psicologo(String nome, String registroProfissional){
+        super(nome, "psicologia", registroProfissional);
     }
     
     public String getAbordagem(){

@@ -2,8 +2,8 @@ public class Fisioterapeuta extends Profissional{
     private int totalSessoesPrevistas;
     private int sessoes;
 
-    public Fisioterapeuta(String nome){
-        super(nome, "fisioterapia");
+    public Fisioterapeuta(String nome, String registroProfissional){
+        super(nome, "fisioterapia", registroProfissional);
     }
     
     public int getTotalSessoesPrevistas(){
@@ -25,7 +25,7 @@ public class Fisioterapeuta extends Profissional{
     
     @Override
     public String exibirResumo() {
-        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() + " | Valor: R$" + getValorConsulta();
+        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional() +"tSessoes: " + this.totalSessoesPrevistas + " | Valor: R$" + getValorConsulta();
     }
     
     @Override
