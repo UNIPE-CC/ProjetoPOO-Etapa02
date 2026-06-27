@@ -374,10 +374,10 @@ public class Main {
             System.out.println("Paciente inativo. Nao e possivel agendar.");
             return;
         }
-        System.out.print("CPF do profissional: ");
-        String cpfProf = sc.nextLine();
+        System.out.print("Registro do profissional: ");
+        String reg = sc.nextLine();
 
-        Profissional profissional = profissionalMap.get(cpfProf);
+        Profissional profissional = profissionalMap.get(reg);
         if (profissional.getValorConsulta() == 0) {
             System.out.println("Profissional sem valor definido. Nao pode agendar.");
             return;
@@ -396,9 +396,9 @@ public class Main {
         }
 
         // verifica conflito
-        if (temConflito(cpfProf, data, horario)) {
+        if (temConflito(reg, data, horario)) {
             System.out.println("Horario ocupado!");
-            String sugestao = sugerirHorario(cpfProf, data);
+            String sugestao = sugerirHorario(reg, data);
             if (sugestao.equals("")) {
                 System.out.println("Nenhum horario disponivel nesse dia.");
                 return;
@@ -416,12 +416,12 @@ public class Main {
             int infoTipo = Integer.parseInt(sc.nextLine());
 
             if (infoTipo == 1) {
-                consultas.add(new Consulta(cpf, cpfProf, data, horario));
+                consultas.add(new Consulta(cpf, reg, data, horario));
 
             } else {
                 System.out.print("Tipo (inicial/retorno/avaliacao): ");
                 String tipo = sc.nextLine();
-                consultas.add(new Consulta(cpf, cpfProf, data, horario, tipo));
+                consultas.add(new Consulta(cpf, reg, data, horario, tipo));
 
             }
             System.out.println("Consulta agendada com sucesso!");
