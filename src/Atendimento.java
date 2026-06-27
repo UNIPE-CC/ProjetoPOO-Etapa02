@@ -76,6 +76,10 @@ public class Atendimento {
         }
     }
 
+    public Atendimento () {
+        this(0, "", "", null, 0);
+    }
+
     // adiciona um por vez
     public void adicionarProcedimento(String procedimento) {
         if (totalProcedimentos < 10) {
