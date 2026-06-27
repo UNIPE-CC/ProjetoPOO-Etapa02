@@ -1,33 +1,23 @@
 public class PagamentoConvenio extends Pagamento{
-    private String convenio;
+    private Convenio convenio;
     
-    public PagamentoConvenio(int indiceConsulta, double valorFinal, String convenio) {
+    public PagamentoConvenio(int indiceConsulta, double valorFinal, Convenio convenio) {
         super(indiceConsulta, valorFinal, "convenio");
         this.convenio = convenio;
     }
     
-    public String getConvenio(){
+    public Convenio getConvenio(){
         return convenio;
     }
     
-    public void setConvenio(String convenio){
+    public void setConvenio(Convenio convenio){
         this.convenio = convenio;
     }
     
     @Override
     public double calcularValorFinal(){
         double valor = getValorFinal();
-        switch (convenio) {
-            case "SaudePlus":
-                valor -= valor * 0.40;
-                break;
-            case "VidaMais":
-                valor -= valor * 0.30;
-                break;
-            case "BemEstar":
-                valor -= valor * 0.50;
-                break;
-        }
+        valor -= valor * convenio.getCobertura();
         setValorFinal(valor);
         return valor;
     }
