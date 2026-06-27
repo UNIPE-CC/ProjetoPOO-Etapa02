@@ -1,24 +1,24 @@
 public class Consulta {
     public String cpfPaciente;
-    public String nomeProfissional;
+    public String registroProfissional;
     public String data;
     public String horario;
     public String tipo;
     public String status;
 
     // sem tipo - assume inicial
-    public Consulta(String cpfPaciente, String nomeProfissional, String data, String horario) {
+    public Consulta(String cpfPaciente, String registroProfissional, String data, String horario) {
         this.cpfPaciente = cpfPaciente;
-        this.nomeProfissional = nomeProfissional;
+        this.registroProfissional = registroProfissional;
         this.data = data;
         this.horario = horario;
         this.tipo = "inicial";
         this.status = "agendada";
     }
 
-    public Consulta(String cpfPaciente, String nomeProfissional, String data, String horario, String tipo) {
+    public Consulta(String cpfPaciente, String registroProfissional, String data, String horario, String tipo) {
         this.cpfPaciente = cpfPaciente;
-        this.nomeProfissional = nomeProfissional;
+        this.registroProfissional = registroProfissional;
         this.data = data;
         this.horario = horario;
         this.tipo = tipo;
@@ -26,10 +26,10 @@ public class Consulta {
     }
 
     // esse aqui a gente usa na remarcacao pra poder setar o status direto
-    public Consulta(String cpfPaciente, String nomeProfissional, String data,
+    public Consulta(String cpfPaciente, String registroProfissional, String data,
                     String horario, String tipo, String status) {
         this.cpfPaciente = cpfPaciente;
-        this.nomeProfissional = nomeProfissional;
+        this.registroProfissional = registroProfissional;
         this.data = data;
         this.horario = horario;
         this.tipo = tipo;
@@ -55,7 +55,7 @@ public class Consulta {
     }
 
     public String exibirResumo() {
-        return "Paciente(CPF): " + cpfPaciente + " | Prof: " + nomeProfissional
+        return "Paciente(CPF): " + cpfPaciente + " | Prof: " + registroProfissional
                 + " | Data: " + data + " | Hora: " + horario
                 + " | Tipo: " + tipo + " | Status: " + status;
     }
