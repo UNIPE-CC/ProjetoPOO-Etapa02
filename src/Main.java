@@ -83,7 +83,7 @@ public class Main {
     }
 
 
-    public static void cadastrarPaciente() throws CpfCadastrado {
+    public static void cadastrarPaciente() throws PacienteJaCadastradoException {
 
             System.out.print("Nome: ");
             String nome = sc.nextLine();
@@ -93,7 +93,7 @@ public class Main {
         try {
             // verifica se ja existe
             if (pacientesMap.containsKey(cpf)) {
-                throw new CpfCadastrado(cpf);
+                throw new PacienteJaCadastradoException(cpf);
             }
             System.out.println("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
             int tipo = Integer.parseInt(sc.nextLine());
@@ -124,20 +124,20 @@ public class Main {
 
             }
             System.out.println("Paciente cadastrado com sucesso!");
-        } catch(CpfCadastrado e){
+        } catch(PacienteJaCadastradoException e){
             System.out.println(e);
         }
     }
 
 
-    public static void complementarPaciente() throws CpfNaoEncontrado {
+    public static void complementarPaciente() throws PacienteNaoEncontradoException {
         //try e catch caso não ache o paciente
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
         try{
             if (!pacientesMap.containsKey(cpf)) {
-                throw new CpfNaoEncontrado(cpf);
+                throw new PacienteNaoEncontradoException(cpf);
             }
 
                 System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
@@ -158,50 +158,50 @@ public class Main {
             }
             System.out.println("Cadastro atualizado!");
 
-        } catch(CpfNaoEncontrado e){
+        } catch(PacienteNaoEncontradoException e){
             System.out.println(e);
         }
     }
 
-    public static void buscarPaciente() throws CpfNaoEncontrado {
+    public static void buscarPaciente() throws PacienteNaoEncontradoException {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
     try{
         if (!pacientesMap.containsKey(cpf)) {
-            throw new CpfNaoEncontrado(cpf);
+            throw new PacienteNaoEncontradoException(cpf);
         }
         System.out.println(pacientesMap.get(cpf).exibirResumo());
 
-    }catch (CpfNaoEncontrado e){
+    }catch (PacienteNaoEncontradoException e){
         System.out.println (e);
     }
 
     }
 
-    public static void listarPacientes() throws PacienteNaoEnc {
+    public static void listarPacientes() throws NenhumPacienteEncException {
         try {
             if (pacientesMap.size() == 0) {
-                throw new PacienteNaoEnc();
+                throw new NenhumPacienteEncException();
             }
 
             for (Paciente paciente : pacientesMap.values()) {
                 System.out.println(paciente.exibirResumo());
             }
-        }catch (PacienteNaoEnc e){
+        }catch (NenhumPacienteEncException e){
             System.out.println (e);
         }
     }
-    public static void desativarPaciente() throws CpfNaoEncontrado {
+    public static void desativarPaciente() throws PacienteNaoEncontradoException {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
         try {
             if (!pacientesMap.containsKey(cpf)) {
-                throw new CpfNaoEncontrado(cpf);
+                throw new PacienteNaoEncontradoException(cpf);
             }
             pacientesMap.get(cpf).desativar();
             System.out.println("Paciente desativado");
 
-        } catch (CpfNaoEncontrado e){
+        } catch (PacienteNaoEncontradoException e){
             System.out.println (e);
         }
     }
@@ -232,81 +232,89 @@ public class Main {
         }
     }
 
-    public static void cadastrarProfissional() {
+    public static void cadastrarProfissional() throws EspecialidadeInvalidaException, ProfissionalJaCadastradoException {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
         System.out.println("Registro: ");//mod
         String reg = sc.nextLine();
         System.out.print("Especialidade (clinica geral/fisioterapia/psicologia/nutricao): ");
         String esp = sc.nextLine();
+        try {
+            if (!Profissional.especialidadeValida(esp)) {
+                throw new EspecialidadeInvalidaException(esp);
+            }
+            try{
+                if(profissionalMap.containsKey(reg)){
+                    throw new ProfissionalJaCadastradoException(reg);
+                }
 
-        if (!Profissional.especialidadeValida(esp)) {
-            System.out.println("Especialidade invalida!");
-            return;
+            System.out.print("Tipo (1-Minimo / 2-Com registro e valor / 3-Completo): ");
+            int tipo = Integer.parseInt(sc.nextLine());
+
+            if (tipo == 1) {
+                if (esp.equals("clinica geral")) {
+                    profissionalMap.put(reg, new ClinicoGeral(nome, reg));//mod
+
+                } else if (esp.equals("fisioterapia")) {
+                    profissionalMap.put(reg, new Fisioterapeuta(nome, reg));//mod
+
+                } else if (esp.equals("psicologia")) {
+                    profissionalMap.put(reg, new Psicologo(nome, reg));//mod
+
+                } else if (esp.equals("nutricao")) {
+                    profissionalMap.put(reg, new Nutricionista(nome, reg));// mod
+
+                }
+
+            } else if (tipo == 2) {
+                System.out.print("Valor consulta: ");
+                double valor = Double.parseDouble(sc.nextLine());
+
+                if (esp.equals("clinica geral")) {
+                    profissionalMap.put(reg, new ClinicoGeral(nome, reg, valor));//mod
+
+                } else if (esp.equals("fisioterapia")) {
+                    profissionalMap.put(reg, new Fisioterapeuta(nome, reg, valor));//mod
+
+                } else if (esp.equals("psicologia")) {
+                    profissionalMap.put(reg, new Psicologo(nome, reg, valor));//mod
+
+                } else if (esp.equals("nutricao")) {
+                    profissionalMap.put(reg, new Nutricionista(nome, reg, valor));//mod
+
+                }
+
+            } else {
+                System.out.print("Valor consulta: ");
+                double valor = Double.parseDouble(sc.nextLine());
+                System.out.print("Quantos dias atende? ");
+                int qtd = Integer.parseInt(sc.nextLine());
+                String[] dias = new String[7];
+                for (int i = 0; i < qtd; i++) {
+                    System.out.print("Dia " + (i + 1) + ": ");
+                    dias[i] = sc.nextLine();
+                }
+
+                if (esp.equals("clinica geral")) {
+                    profissionalMap.put(reg, new ClinicoGeral(nome, reg, valor, dias, qtd));//mod
+
+                } else if (esp.equals("fisioterapia")) {
+                    profissionalMap.put(reg, new Fisioterapeuta(nome, reg, valor, dias, qtd));//mod
+
+                } else if (esp.equals("psicologia")) {
+                    profissionalMap.put(reg, new Psicologo(nome, reg, valor, dias, qtd));//mod
+
+                } else if (esp.equals("nutricao")) {
+                    profissionalMap.put(reg, new Nutricionista(nome, reg, valor, dias, qtd));//mod
+
+                }
+            }
+            System.out.println("Profissional cadastrado!");
+        }catch (ProfissionalJaCadastradoException e){
+            System.out.println (e);}
+        }catch (EspecialidadeInvalidaException e){
+            System.out.println (e);
         }
-
-        System.out.print("Tipo (1-Minimo / 2-Com registro e valor / 3-Completo): ");
-        int tipo = Integer.parseInt(sc.nextLine());
-
-        if (tipo == 1) {
-            if (esp.equals("clinica geral")) {
-                profissionalMap.put(reg ,new ClinicoGeral(nome, reg));//mod
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionalMap.put(reg, new Fisioterapeuta(nome, reg));//mod
-
-            } else if (esp.equals("psicologia")) {
-                profissionalMap.put(reg, new Psicologo(nome, reg));//mod
-
-            } else if (esp.equals("nutricao")) {
-                profissionalMap.put(reg, new Nutricionista(nome, reg));// mod
-
-            }
-
-        } else if (tipo == 2) {
-            System.out.print("Valor consulta: ");
-            double valor = Double.parseDouble(sc.nextLine());
-
-            if (esp.equals("clinica geral")) {
-                profissionalMap.put(reg, new ClinicoGeral(nome, reg, valor));//mod
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionalMap.put(reg, new Fisioterapeuta(nome, reg, valor));//mod
-
-            } else if (esp.equals("psicologia")) {
-                profissionalMap.put(reg, new Psicologo(nome, reg, valor));//mod
-
-            } else if (esp.equals("nutricao")) {
-                profissionalMap.put(reg, new Nutricionista(nome, reg, valor));//mod
-
-            }
-
-        } else {
-            System.out.print("Valor consulta: ");
-            double valor = Double.parseDouble(sc.nextLine());
-            System.out.print("Quantos dias atende? ");
-            int qtd = Integer.parseInt(sc.nextLine());
-            String[] dias = new String[7];
-            for (int i = 0; i < qtd; i++) {
-                System.out.print("Dia " + (i+1) + ": ");
-                dias[i] = sc.nextLine();
-            }
-
-            if (esp.equals("clinica geral")) {
-                profissionalMap.put(reg, new ClinicoGeral(nome, reg, valor, dias, qtd));//mod
-
-            } else if (esp.equals("fisioterapia")) {
-                profissionalMap.put(reg, new Fisioterapeuta(nome, reg, valor, dias, qtd));//mod
-
-            } else if (esp.equals("psicologia")) {
-                profissionalMap.put(reg, new Psicologo(nome, reg, valor, dias, qtd));//mod
-
-            } else if (esp.equals("nutricao")) {
-                profissionalMap.put(reg, new Nutricionista(nome, reg, valor, dias, qtd));//mod
-
-            }
-        }
-        System.out.println("Profissional cadastrado!");
     }
 
     public static void atualizarProfissional() {
