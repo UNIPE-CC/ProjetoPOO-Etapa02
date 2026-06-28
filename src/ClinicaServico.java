@@ -104,5 +104,41 @@ public class ClinicaServico {
         } catch (Exception e) {
             return "";
         }
+        public void remarcarConsulta(String cpfPaciente, String dataOrig, String horarioOrig, 
+                                  String novaData, String novoHorario) 
+            throws PacienteNaoEncontradoException, ConsultaNaoEncontradaException, 
+                   HorarioIndisponivelException, OperacaoInvalidaException {
+        
+        buscarPacientePorCpf(cpfPaciente);
+        
+        for (Consulta consulta : consultas) {
+            if (consulta.getPaciente() != null && 
+                consulta.getPaciente().getCpf().equals(cpfPaciente) &&
+                consulta.getData().equals(dataOrig) &&
+                consulta.getHorario().equals(horarioOrig) &&
+                consulta.isAgendada()) {
+                
+                String registroProf = consulta.getProfissional().getRegistroProfissional();
+                String diaSemana = descobrirDiaSemana(novaData);
+                if (!consulta.getProfissional().atendeNoDia(diaSemana)) {
+                    throw new HorarioIndisponivelException("Profissional nao atende no dia " + diaSemana);
+                }
+                if (temConflito(registroProf, novaData, novoHorario)) {
+                    throw new HorarioIndisponivelException("Horario " + novoHorario + " ja esta ocupado");
+                }
+                
+                Consulta novaConsulta = new Consulta(
+                    consulta.getPaciente(),
+                    consulta.getProfissional(),
+                    novaData,
+                    novoHorario,
+                    consulta.getTipo()
+                );
+                consulta.remarcar();
+                consultas.add(novaConsulta);
+                return;
+            }
+        }
+        throw new ConsultaNaoEncontradaException("Consulta nao encontrada para remarcacao");
     }
 }
