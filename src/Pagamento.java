@@ -33,6 +33,10 @@ public abstract class Pagamento implements Exportavel{
     }
     
     public void setParcelas(int parcelas){
+        if(parcelas <1 || parcelas > 6){
+            System.out.println("Quantidade de parcelas invalida");
+            return;
+        }
         this.parcelas = parcelas;
     }
     
@@ -52,12 +56,12 @@ public abstract class Pagamento implements Exportavel{
     }
 
     // sem desconto nenhum
-    public static double calcularValor(double valorBase) {
+    public double calcularValor(double valorBase) {
         return valorBase;
     }
 
     // com desconto em percentual
-    public static double calcularValor(double valorBase, double percentualDesconto) {
+    public double calcularValor(double valorBase, double percentualDesconto) {
         double desconto = valorBase * percentualDesconto / 100;
         double valor = valorBase - desconto;
         if (valor < 0) {
@@ -67,7 +71,7 @@ public abstract class Pagamento implements Exportavel{
     }
 
     // com desconto e multa somada
-    public static double calcularValor(double valorBase, double percentualDesconto, double multa) {
+    public double calcularValor(double valorBase, double percentualDesconto, double multa) {
         double desconto = valorBase * percentualDesconto / 100;
         double valor = valorBase - desconto + multa;
         if (valor < 0) {
