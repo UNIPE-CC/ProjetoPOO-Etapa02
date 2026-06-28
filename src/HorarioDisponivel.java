@@ -30,4 +30,17 @@ public class HorarioDisponivel {
     public String exibirResumo() {
         return diaSemana + " (" + turno + ")";
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        HorarioDisponivel that = (HorarioDisponivel) obj;
+        return diaSemana.equals(that.diaSemana) && turno.equals(that.turno);
+    }
+
+    @Override
+    public int hashCode() {
+        return diaSemana.hashCode() + turno.hashCode();
+    }
 }
