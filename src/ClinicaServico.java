@@ -211,4 +211,61 @@ public class ClinicaServico {
         }
         throw new ConsultaNaoEncontradaException("Consulta nao encontrada para CPF " + cpfPaciente + " em " + data + " " + horario);
     }
+    public Pagamento registrarPagamento(String cpfPaciente, String data, String horario, 
+                                        String tipoPagamento, double valorBase, int parcelas) 
+            throws PacienteNaoEncontradoException, ConsultaNaoEncontradaException, 
+                   PagamentoInvalidoException, ConvenioNaoCobreException {
+        
+        buscarPacientePorCpf(cpfPaciente);
+        
+        for (Consulta consulta : consultas) {
+            if (consulta.getPaciente() != null && 
+                consulta.getPaciente().getCpf().equals(cpfPaciente) &&
+                consulta.getData().equals(data) &&
+                consulta.getHorario().equals(horario)) {
+                
+                if (!consulta.isRealizada()) {
+                    throw new PagamentoInvalidoException("Consulta nao realizada. Pagamento nao permitido.");
+                }
+                
+                if (parcelas < 1) {
+                    throw new PagamentoInvalidoException("Numero de parcelas invalido. Minimo 1.");
+                }
+                if (parcelas > 6) {
+                    throw new PagamentoInvalidoException("Numero de parcelas invalido. Maximo 6.");
+                }
+                
+                if (valorBase < 0) {
+                    throw new PagamentoInvalidoException("Valor nao pode ser negativo");
+                }
+                
+                Pagamento pagamento;
+                Paciente paciente = consulta.getPaciente();
+                
+                if (tipoPagamento.equalsIgnoreCase("dinheiro")) {
+                    pagamento = new PagamentoDinheiro(consulta, valorBase);
+                } else if (tipoPagamento.equalsIgnoreCase("cartao")) {
+                    pagamento = new PagamentoCartao(consulta, valorBase, parcelas);
+                } else if (tipoPagamento.equalsIgnoreCase("convenio")) {
+                    Convenio convenio = paciente.getConvenio();
+                    if (convenio == null) {
+                        throw new PagamentoInvalidoException("Paciente nao possui convenio");
+                    }
+                    String especialidade = consulta.getProfissional().getEspecialidade();
+                    if (!convenio.cobreEspecialidade(especialidade)) {
+                        throw new ConvenioNaoCobreException("Convenio " + convenio.getNomeConvenio() + 
+                            " nao cobre a especialidade " + especialidade);
+                    }
+                    pagamento = new PagamentoConvenio(consulta, valorBase, convenio, especialidade);
+                } else {
+                    throw new PagamentoInvalidoException("Tipo de pagamento " + tipoPagamento + " nao reconhecido");
+                }
+                
+                pagamento.calcularValorFinal();
+                pagamentos.add(pagamento);
+                return pagamento;
+            }
+        }
+        throw new ConsultaNaoEncontradaException("Consulta nao encontrada para CPF " + cpfPaciente + " em " + data + " " + horario);
+    }
 }
