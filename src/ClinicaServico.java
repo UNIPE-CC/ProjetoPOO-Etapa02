@@ -141,4 +141,74 @@ public class ClinicaServico {
         }
         throw new ConsultaNaoEncontradaException("Consulta nao encontrada para remarcacao");
     }
+        public Atendimento registrarAtendimento(String cpfPaciente, String data, String horario, 
+                                            String observacoes, String diagnostico, 
+                                            String dataRegistro, List<String> procedimentos) 
+            throws PacienteNaoEncontradoException, ConsultaNaoEncontradaException, OperacaoInvalidaException {
+        
+        buscarPacientePorCpf(cpfPaciente);
+        
+        for (Consulta consulta : consultas) {
+            if (consulta.getPaciente() != null && 
+                consulta.getPaciente().getCpf().equals(cpfPaciente) &&
+                consulta.getData().equals(data) &&
+                consulta.getHorario().equals(horario)) {
+                
+                if (!consulta.isAgendada() && !consulta.isRemarcada()) {
+                    throw new OperacaoInvalidaException("So pode registrar atendimento em consulta agendada");
+                }
+                
+                Atendimento atendimento = new Atendimento(consulta, observacoes, diagnostico, dataRegistro);
+                if (procedimentos != null) {
+                    for (String proc : procedimentos) {
+                        atendimento.adicionarProcedimento(proc);
+                    }
+                }
+                consulta.realizar();
+                atendimentos.add(atendimento);
+                
+                if (consulta.getProfissional() != null) {
+                    consulta.getProfissional().registrarEspecifico(atendimento);
+                }
+                
+                return atendimento;
+            }
+        }
+        throw new ConsultaNaoEncontradaException("Consulta nao encontrada para CPF " + cpfPaciente + " em " + data + " " + horario);
+    }
+    public Atendimento registrarAtendimento(String cpfPaciente, String data, String horario, 
+                                            String observacoes, String diagnostico, 
+                                            String dataRegistro, List<String> procedimentos) 
+            throws PacienteNaoEncontradoException, ConsultaNaoEncontradaException, OperacaoInvalidaException {
+        
+        buscarPacientePorCpf(cpfPaciente);
+        
+        for (Consulta consulta : consultas) {
+            if (consulta.getPaciente() != null && 
+                consulta.getPaciente().getCpf().equals(cpfPaciente) &&
+                consulta.getData().equals(data) &&
+                consulta.getHorario().equals(horario)) {
+                
+                if (!consulta.isAgendada() && !consulta.isRemarcada()) {
+                    throw new OperacaoInvalidaException("So pode registrar atendimento em consulta agendada");
+                }
+                
+                Atendimento atendimento = new Atendimento(consulta, observacoes, diagnostico, dataRegistro);
+                if (procedimentos != null) {
+                    for (String proc : procedimentos) {
+                        atendimento.adicionarProcedimento(proc);
+                    }
+                }
+                consulta.realizar();
+                atendimentos.add(atendimento);
+                
+                if (consulta.getProfissional() != null) {
+                    consulta.getProfissional().registrarEspecifico(atendimento);
+                }
+                
+                return atendimento;
+            }
+        }
+        throw new ConsultaNaoEncontradaException("Consulta nao encontrada para CPF " + cpfPaciente + " em " + data + " " + horario);
+    }
 }
