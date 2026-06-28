@@ -1,9 +1,41 @@
-public class Pagamento {
-    public int indiceConsulta;
-    public double valorFinal;
-    public String tipoPagamento;
-    public int parcelas;
+public abstract class Pagamento {
+    private int indiceConsulta;
+    private double valorFinal;
+    private String tipoPagamento;
+    private int parcelas;
 
+    public int getIndiceConsulta() {
+        return indiceConsulta;
+    }
+    
+    public void setIndiceConsulta(int indeiceConsulta){
+        this.indiceConsulta = indeiceConsulta;
+    }
+
+    public double getValorFinal() {
+        return valorFinal;
+    }
+
+    public void setValorFinal(double valorFinal) {
+        this.valorFinal = valorFinal;
+    }
+
+    public String getTipoPagamento() {
+        return tipoPagamento;
+    }
+    
+    public void setTipoPagamento(String tipoPagamento){
+        this.tipoPagamento = tipoPagamento;
+    }
+
+    public int getParcelas() {
+        return parcelas;
+    }
+    
+    public void setParcelas(int parcelas){
+        this.parcelas = parcelas;
+    }
+    
     public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento) {
         this.indiceConsulta = indiceConsulta;
         this.valorFinal = valorFinal;
@@ -55,4 +87,6 @@ public class Pagamento {
         }
         return resumo;
     }
+    
+    public abstract double calcularValorFinal();
 }
