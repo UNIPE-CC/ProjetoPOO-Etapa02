@@ -1,56 +1,34 @@
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Classe que representa o prontuário de um paciente.
- * Contém observações, diagnóstico, procedimentos realizados e data de registro.
- */
 public class Prontuario {
-    
     private String observacoes;
     private String diagnostico;
     private List<String> procedimentos;
     private String dataRegistro;
-    
-    /**
-     * Construtor básico do prontuário.
-     * 
-     * @param observacoes Observações sobre o paciente
-     * @param diagnostico Diagnóstico do paciente
-     * @param dataRegistro Data do registro no formato dd/MM/yyyy
-     */
-    public Prontuario(String observacoes, String diagnostico, String dataRegistro) {
+
+    // COMPOSIÇÃO: construtor package-private - só pode ser criado dentro do pacote
+    // Este construtor só deve ser chamado por Atendimento
+    Prontuario(String observacoes, String diagnostico, String dataRegistro) {
         setObservacoes(observacoes);
         setDiagnostico(diagnostico);
         setDataRegistro(dataRegistro);
         this.procedimentos = new ArrayList<>();
     }
 
-    /**
-     * Construtor completo com lista de procedimentos.
-     * 
-     * @param observacoes Observações sobre o paciente
-     * @param diagnostico Diagnóstico do paciente
-     * @param procedimentos Lista de procedimentos realizados
-     * @param dataRegistro Data do registro no formato dd/MM/yyyy
-     */
-    public Prontuario(String observacoes, String diagnostico, List<String> procedimentos, String dataRegistro) {
+    // SOBRECARGA: construtor com lista de procedimentos
+    Prontuario(String observacoes, String diagnostico, List<String> procedimentos, String dataRegistro) {
         setObservacoes(observacoes);
         setDiagnostico(diagnostico);
         setDataRegistro(dataRegistro);
         this.procedimentos = procedimentos != null ? new ArrayList<>(procedimentos) : new ArrayList<>();
     }
-    
+
     public String getObservacoes() {
         return observacoes;
     }
 
-    /**
-     * Define as observações com validação.
-     * 
-     * @param observacoes Observações a serem definidas
-     */
-    public void setObservacoes(String observacoes) {
+    void setObservacoes(String observacoes) {
         if (observacoes != null && !observacoes.trim().isEmpty()) {
             this.observacoes = observacoes.trim();
         } else {
@@ -62,12 +40,7 @@ public class Prontuario {
         return diagnostico;
     }
 
-    /**
-     * Define o diagnóstico com validação.
-     * 
-     * @param diagnostico Diagnóstico a ser definido
-     */
-    public void setDiagnostico(String diagnostico) {
+    void setDiagnostico(String diagnostico) {
         if (diagnostico != null && !diagnostico.trim().isEmpty()) {
             this.diagnostico = diagnostico.trim();
         } else {
@@ -83,36 +56,22 @@ public class Prontuario {
         return dataRegistro;
     }
 
-    /**
-     * Define a data de registro com validação.
-     * 
-     * @param dataRegistro Data no formato dd/MM/yyyy
-     */
-    public void setDataRegistro(String dataRegistro) {
+    void setDataRegistro(String dataRegistro) {
         if (dataRegistro != null && !dataRegistro.trim().isEmpty()) {
             this.dataRegistro = dataRegistro.trim();
         } else {
             this.dataRegistro = "";
         }
     }
-    
-    /**
-     * Adiciona um procedimento à lista.
-     * 
-     * @param procedimento Procedimento a ser adicionado
-     */
-    public void adicionarProcedimento(String procedimento) {
+
+    // SOBRECARGA: métodos adicionarProcedimento com diferentes parâmetros
+    void adicionarProcedimento(String procedimento) {
         if (procedimento != null && !procedimento.trim().isEmpty()) {
             this.procedimentos.add(procedimento.trim());
         }
     }
 
-    /**
-     * Adiciona múltiplos procedimentos à lista.
-     * 
-     * @param novosProcedimentos Lista de procedimentos a serem adicionados
-     */
-    public void adicionarProcedimentos(List<String> novosProcedimentos) {
+    void adicionarProcedimentos(List<String> novosProcedimentos) {
         if (novosProcedimentos != null) {
             for (String proc : novosProcedimentos) {
                 if (proc != null && !proc.trim().isEmpty()) {
@@ -122,34 +81,27 @@ public class Prontuario {
         }
     }
 
-    /**
-     * Remove todos os procedimentos da lista.
-     */
-    public void limparProcedimentos() {
+    void limparProcedimentos() {
         this.procedimentos.clear();
     }
 
-    /**
-     * Verifica se o prontuário possui procedimentos registrados.
-     * 
-     * @return true se possui procedimentos, false caso contrário
-     */
-    public boolean possuiProcedimentos() {
+    boolean possuiProcedimentos() {
         return !procedimentos.isEmpty();
     }
-    
-    /**
-     * Retorna um resumo formatado do prontuário.
-     * 
-     * @return String com todos os dados do prontuário formatados
-     */
+
+    int getTotalProcedimentos() {
+        return procedimentos.size();
+    }
+
     public String exibirResumo() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Data Registro: ").append(dataRegistro != null ? dataRegistro : "Não informada");
-        sb.append("\nObservações: ").append(observacoes != null ? observacoes : "Nenhuma");
-        sb.append("\nDiagnóstico: ").append(diagnostico != null ? diagnostico : "Não informado");
+        sb.append("Data Registro: ").append(dataRegistro != null && !dataRegistro.isEmpty() ? 
+                                           dataRegistro : "Não informada");
+        sb.append("\nObservações: ").append(observacoes != null && !observacoes.isEmpty() ? 
+                                            observacoes : "Nenhuma");
+        sb.append("\nDiagnóstico: ").append(diagnostico != null && !diagnostico.isEmpty() ? 
+                                            diagnostico : "Não informado");
         sb.append("\nProcedimentos: ");
-        
         if (procedimentos.isEmpty()) {
             sb.append("Nenhum procedimento registrado");
         } else {
