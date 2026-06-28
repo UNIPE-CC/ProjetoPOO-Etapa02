@@ -19,78 +19,90 @@ public class ClinicaServico {
         this.cpfsCadastrados = new HashSet<>();
     }
 
-    public Map<String, Paciente> getPacientes() {
-        return pacientes;
-    }
+    // Getters e métodos de cadastro/busca (Commit 1 e 2)
+    // ... (código dos commits anteriores)
 
-    public Map<String, Profissional> getProfissionais() {
-        return profissionais;
-    }
-
-    public List<Consulta> getConsultas() {
-        return consultas;
-    }
-
-    public List<Atendimento> getAtendimentos() {
-        return atendimentos;
-    }
-
-    public Set<Pagamento> getPagamentos() {
-        return pagamentos;
-    }
-
-    public List<Pessoa> getTodasPessoas() {
-        return todasPessoas;
-    }
-
-    public void cadastrarPaciente(Paciente paciente) throws Exception {
-        if (paciente == null) {
-            throw new IllegalArgumentException("Paciente nao pode ser nulo");
+    public void agendarConsulta(String cpfPaciente, String registroProfissional, String data, String horario, String tipo) 
+            throws PacienteNaoEncontradoException, ProfissionalNaoEncontradoException, 
+                   PacienteInativoException, HorarioIndisponivelException {
+        
+        Paciente paciente = buscarPacientePorCpf(cpfPaciente);
+        if (!paciente.isAtivo()) {
+            throw new PacienteInativoException("Paciente " + paciente.getNome() + " esta inativo");
         }
-        String cpf = paciente.getCpf();
-        if (cpfsCadastrados.contains(cpf)) {
-            throw new Exception("CPF ja cadastrado");
+        
+        Profissional profissional = buscarProfissionalPorRegistro(registroProfissional);
+        if (profissional.getValorConsulta() <= 0) {
+            throw new HorarioIndisponivelException("Profissional sem valor definido");
         }
-        pacientes.put(cpf, paciente);
-        cpfsCadastrados.add(cpf);
-        todasPessoas.add(paciente);
+        
+        String diaSemana = descobrirDiaSemana(data);
+        if (!profissional.atendeNoDia(diaSemana)) {
+            throw new HorarioIndisponivelException("Profissional nao atende no dia " + diaSemana);
+        }
+        
+        if (temConflito(registroProfissional, data, horario)) {
+            throw new HorarioIndisponivelException("Horario " + horario + " ja esta ocupado");
+        }
+        
+        Consulta consulta = new Consulta(paciente, profissional, data, horario, tipo);
+        consultas.add(consulta);
     }
 
-    public Paciente buscarPacientePorCpf(String cpf) throws PacienteNaoEncontradoException {
-        Paciente paciente = pacientes.get(cpf);
-        if (paciente == null) {
-            throw new PacienteNaoEncontradoException("Paciente com CPF " + cpf + " nao encontrado");
-        }
-        return paciente;
-    }
-
-    public void cadastrarProfissional(Profissional profissional) throws Exception {
-        if (profissional == null) {
-            throw new IllegalArgumentException("Profissional nao pode ser nulo");
-        }
-        String cpf = profissional.getCpf();
-        if (cpfsCadastrados.contains(cpf)) {
-            throw new Exception("CPF ja cadastrado");
-        }
-        profissionais.put(cpf, profissional);
-        cpfsCadastrados.add(cpf);
-        todasPessoas.add(profissional);
-    }
-
-    public Profissional buscarProfissionalPorCpf(String cpf) throws ProfissionalNaoEncontradoException {
-        Profissional profissional = profissionais.get(cpf);
-        if (profissional == null) {
-            throw new ProfissionalNaoEncontradoException("Profissional com CPF " + cpf + " nao encontrado");
-        }
-        return profissional;
-    }
-
-    public Profissional buscarProfissionalPorRegistro(String registro) throws ProfissionalNaoEncontradoException {
-        for (Profissional prof : profissionais.values()) {
-            if (prof.getRegistroProfissional().equals(registro)) {
-                return prof;
+    public void cancelarConsulta(String cpfPaciente, String data, String horario) 
+            throws PacienteNaoEncontradoException, ConsultaNaoEncontradaException, OperacaoInvalidaException {
+        
+        buscarPacientePorCpf(cpfPaciente);
+        
+        for (Consulta consulta : consultas) {
+            if (consulta.getPaciente() != null && 
+                consulta.getPaciente().getCpf().equals(cpfPaciente) &&
+                consulta.getData().equals(data) &&
+                consulta.getHorario().equals(horario)) {
+                
+                if (consulta.isRealizada()) {
+                    throw new OperacaoInvalidaException("Consulta ja realizada. Nao pode cancelar.");
+                }
+                if (consulta.isCancelada()) {
+                    throw new OperacaoInvalidaException("Consulta ja cancelada.");
+                }
+                consulta.cancelar();
+                return;
             }
         }
-        throw new ProfissionalNaoEncontradoException("Profissional com registro " + registro + " nao encontrado");
+        throw new ConsultaNaoEncontradaException("Consulta nao encontrada para CPF " + cpfPaciente + " em " + data + " " + horario);
+    }
+
+    private boolean temConflito(String registroProfissional, String data, String horario) {
+        for (Consulta consulta : consultas) {
+            if (consulta.getProfissional() != null &&
+                consulta.getProfissional().getRegistroProfissional().equals(registroProfissional) &&
+                consulta.getData().equals(data) &&
+                consulta.getHorario().equals(horario) &&
+                (consulta.isAgendada() || consulta.isRemarcada())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private String descobrirDiaSemana(String data) {
+        try {
+            int dia = Integer.parseInt(data.substring(0, 2));
+            int mes = Integer.parseInt(data.substring(3, 5));
+            int ano = Integer.parseInt(data.substring(6, 10));
+            if (mes < 3) {
+                mes = mes + 12;
+                ano = ano - 1;
+            }
+            int k = ano % 100;
+            int j = ano / 100;
+            int resultado = (dia + (13 * (mes + 1)) / 5 + k + k / 4 + j / 4 - 2 * j) % 7;
+            if (resultado < 0) resultado = resultado + 7;
+            String[] nomes = {"sabado", "domingo", "segunda", "terca", "quarta", "quinta", "sexta"};
+            return nomes[resultado];
+        } catch (Exception e) {
+            return "";
+        }
     }
 }
