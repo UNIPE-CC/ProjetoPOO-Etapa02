@@ -136,19 +136,18 @@ public class Main {
         if (pacientesMap.containsKey(cpf)) {
             System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
             int tipo = Integer.parseInt(sc.nextLine());
-
             System.out.print("Idade: ");
             int idade = Integer.parseInt(sc.nextLine());
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
 
             if(tipo == 1) {
-                pacientesMap.get("123").complementar(idade, tel);
+                pacientesMap.get(cpf).complementar(idade, tel);
             } else {
                 System.out.print("Convenio: ");
                 String conv = sc.nextLine();
 
-                pacientesMap.get("123").complementar(idade, tel, conv);
+                pacientesMap.get(cpf).complementar(idade, tel, conv);
             }
             System.out.println("Cadastro atualizado!");
 
@@ -161,9 +160,13 @@ public class Main {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
-        System.out.println(pacientesMap.get(cpf).exibirResumo());
-
-        //System.out.println("Nenhum paciente encontrado");
+        Paciente paciente = pacientesMap.get(cpf);
+        
+        if(paciente == null){
+            System.out.println("Paciente nao encontrado");
+            return;
+        }
+        System.out.println(paciente.exibirResumo());
     }
 
     public static void listarPacientes() {
@@ -180,9 +183,14 @@ public class Main {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
-        pacientesMap.get(cpf).desativar();
+        Paciente paciente = pacientesMap.get(cpf);
 
-        //System.out.println("Paciente nao encontrado.");
+        if(paciente == null){
+            System.out.println("Paciente não encontrado");
+            return;
+        }
+        paciente.desativar();
+        System.out.println("Paciente desativado.");
     }
 
 
