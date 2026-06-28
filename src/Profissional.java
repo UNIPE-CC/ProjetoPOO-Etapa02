@@ -54,6 +54,15 @@ public abstract class Profissional extends Pessoa {
     }
     
     // so nome e especialidade
+     public Profissional(String nome, String especialidade) {
+        super(nome, "");           //o cpf foi dedixado com variavdefaultel 
+        this.especialidade = especialidade;
+        setRegistroProfissional(registroProfissional);
+        this.valorConsulta = 0;
+        this.diasDisponiveis = new String[7];
+        this.totalDias = 0;
+     }
+        
     public Profissional(String nome, String especialidade, String registroProfissional) {
         super(nome, "");           //o cpf foi dedixado com variavdefaultel 
         setEspecialidade(especialidade);
