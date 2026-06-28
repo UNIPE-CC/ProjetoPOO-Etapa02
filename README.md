@@ -1,168 +1,260 @@
-<<<<<<< HEAD
-=======
-# Projeto de Refatoração com Implementação de POO - Sistema Clínico
+🏥 Sistema de Clínica Médica
 
-## Objetivos
+📐 Diagrama de Classes UML
 
-Implementar os seguintes conceitos:
+### 🔷 Interfaces
 
-* Herança
-* Polimorfismo
-* Encapsulamento
-* Abstração
-* Collections
-* Tratamento de Erros
-
----
-# Regras do Time
-
-* Nunca realizar commits diretamente na `main`.
-* Sempre trabalhar em uma branch própria.
-* Atualizar sua branch com a `dev` antes de abrir Pull Request.
-* Resolver conflitos na sua branch antes do merge.
-* Não enviar código que não compile.
-* Testar todas as alterações antes de solicitar merge.
-* Utilizar mensagens de commit claras e objetivas.
-
-
-# Estratégia de Branches
-
-## main
-
-* Contém apenas o código final e funcional.
-* Não devem ser realizados commits diretos nesta branch.
-* Recebe apenas versões validadas da `dev`.
-
-## dev
-
-* Branch de integração do projeto.
-* Recebe as implementações concluídas das branches individuais.
-* Deve permanecer sempre funcional.
-
-## Branch Pessoal
-
-Cada integrante deve criar sua própria branch a partir da `dev`.
-
-Exemplos:
-
-```bash
-feature-joao
-feature-giuli
-feature-gabriel
 ```
 
-Nela serão realizados:
+┌──────────────────────────┐      ┌───────────────────────────┐
+│      <<interface>>       │      │      <<interface>>        │
+│        Agendavel         │      │        Exportavel         │
+│ ──────────────────────── │      │ ───────────────────────── │
+│ + agendar(): void        │      │ + exportarDados(): String │
+│ + cancelar(): String     │      └───────────────────────────┘
+│ + remarcar(): void       │
+└──────────────────────────┘
 
-* Refatorações;
-* Correções;
-* Implementação de funcionalidades;
-* Testes individuais.
-
----
-
-# Fluxo de Trabalho
-
-## 1. Clonar o Repositório
-
-```bash
-git clone <URL_DO_REPOSITORIO>
-cd <NOME_DO_PROJETO>
 ```
 
----
+### 🔷 Hierarquia de Pessoa
 
-## 2. Criar sua Branch
-
-Partindo da branch `dev`:
-
-```bash
-git checkout dev
-git pull origin dev
-
-git checkout -b feature-seu-nome
+```
+                    ┌──────────────────────────────────────┐
+                    │             <<abstract>>             │
+                    │                Pessoa                │
+                    │ ──────────────────────────────────── │
+                    │ - nome: String                       │
+                    │ - cpf: String                        │
+                    │ - telefone: String                   │
+                    │ - dataNascimento: String             │
+                    │ ──────────────────────────────────── │
+                    │ + getNome(): String                  │
+                    │ + getCpf(): String                   │
+                    │ + getTelefone(): String              │
+                    │ + getDataNascimento(): String        │
+                    │ + exibirDadosBasicos(): String       │
+                    │ + exibirResumo(): String <<abstract>>│
+                    └──────────────┬───────────────────────┘
+                                   │
+                 ┌─────────────────┼─────────────────┐
+                 ▼                                   ▼
+    ┌────────────────────────┐        ┌───────────────────────────────────────────────────────┐
+    │        Paciente        │        │       Profissional <<abstract>>                       │
+    │ ────────────────────── │        │ ───────────────────────────────────────────────────── │
+    │ - idade: int           │        │ - especialidade: String                               │
+    │ - convenio: Convenio   │        │ - registroProfissional: String                        │
+    │ - ativo: boolean       │        │ - valorConsulta: double                               │
+    │ ────────────────────── │        │ - horariosDisponiveis: List<HorarioDisponivel>        │
+    │ + getIdade(): int      │        │ ───────────────────────────────────────────────────── │
+    │ + getConvenio()        │        │ + getEspecialidade(): String                          │
+    │ + isAtivo(): boolean   │        │ + getValorConsulta(): double                          │
+    │ + desativar(): void    │        │ + atendeNoDia(String): boolean                        │
+    │ + complementar(...)    │        │ + temHorarioDisponivel(...): boolean                  │
+    │ + exibirResumo()       │        │ + atualizar(...): void                                │
+    └────────────────────────┘        │ + registrarEspecifico(Atendimento): void <<abstract>> │
+                                      │ + exibirResumo(): String                              │
+                                      └───────────────────────────┬───────────────────────────┘
+                                                                  │
+                                           ┌──────────────┬───────┼───────┬─────────────────┐
+                                           ▼              ▼               ▼                 ▼
+                          ┌────────────────────────┐ ┌──────────────┐ ┌──────────────┐ ┌──────────────┐
+                          │ ClinicoGeral           │ │Fisioterapeuta│ │  Psicologo   │ │Nutricionista │
+                          │ ────────────────────── │ │ ──────────── │ │ ──────────── │ │ ──────────── │
+                          │-encaminhamento: String │ │-totalSessoes │ │ -abordagem   │ │-planoAlimen- │
+                          │ ────────────────────── │ │  Previstas   │ │  : String    │ │  tar: String │
+                          │+registrarEspecifico()  │ │  : int       │ │              │ │              │
+                          │+exibirResumo           │ │+registrarEspe│ │+registrarEspe│ │+registrarEspe│
+                          └────────────────────────┘ │ cifico(...)  │ │ cifico(...)  │ │ cifico(...)  │
+                                                     │+exibirResumo │ │+exibirResumo  │ │+exibirResumo │
+                                                     └──────────────┘ └──────────────┘ └──────────────┘
 ```
 
+> **Herança (3 níveis):** `Pessoa` → `Profissional` → Especialidades
+
 ---
 
-## 3. Desenvolver na sua Branch
+### 🔷 Consulta
 
-Antes de iniciar novas alterações:
-
-```bash
-git checkout feature-seu-nome
-git pull origin dev
 ```
-
-Caso existam mudanças recentes na `dev`, atualize sua branch antes de continuar.
-
----
-
-## 4. Realizar Commits
-
-```bash
-git add .
-git commit -m "Descrição da alteração"
-git push origin feature-seu-nome
+┌────────────────────────────────────────────────────────────┐
+│                         Consulta                           │
+│            (implements Agendavel, Exportavel)              │
+│ ────────────────────────────────────────────────────────── │
+│ - paciente: Paciente                                       │
+│ - profissional: Profissional                               │
+│ - data: String                                             │
+│ - horario: String                                          │
+│ - tipo: String                                             │
+│ - status: String                                           │
+│ ────────────────────────────────────────────────────────── │
+│ + Consulta(Paciente, Profissional, String, String)         │
+│ + Consulta(Paciente, Profissional, String, String, String) │
+│ + agendar(): void                                          │
+│ + cancelar(): String                                       │
+│ + remarcar(): void                                         │
+│ + realizar(): void                                         │
+│ + exportarDados(): String                                  │
+│ + exibirResumo(): String                                   │
+│ + isAgendada(): boolean                                    │
+│ + isRealizada(): boolean                                   │
+│ + isCancelada(): boolean                                   │
+│ + getPaciente(): Paciente                                  │
+│ + getProfissional(): Profissional                          │
+│ + getData(): String                                        │
+│ + getHorario(): String                                     │
+│ + getStatus(): String                                      │
+│ + setStatus(String): void                                  │
+└────────────────────────────────────────────────────────────┘
 ```
-
 ---
 
-## 5. Testar o Sistema
+### 🔷 Atendimento, Prontuário e Convênio
 
-Antes de enviar para a `dev`:
-
-* Compilar o projeto;
-* Executar os testes;
-* Verificar se não houve quebra de funcionalidades existentes.
-
-### Se NÃO estiver funcionando
-
-Continuar corrigindo na sua branch.
-
-### Se estiver funcionando
-
-Abrir um Pull Request para a branch `dev`.
-
----
-
-## 6. Merge para a dev
-
-Após validação:
-
-```text
-feature-seu-nome
-        ↓
-       dev
 ```
-
-A branch `dev` deve permanecer sempre funcional.
-
----
-
-## 7. Merge para a main
-
-Quando a `dev` estiver estável e validada pelo grupo:
-
-```text
-feature-seu-nome
-        ↓
-       dev
-        ↓
-      main
+┌──────────────────────────────────┐        ┌────────────────────────────────────┐
+│           Atendimento            │        │              Convenio              │
+│ ──────────────────────────────── │        │ ────────────────────────────────── │
+│ - consulta: Consulta             │        │ - nomeConvenio: String             │
+│ - prontuario: Prontuario ◄─COMP  │        │ - cobertura: double                │
+│ ──────────────────────────────── │        │ - especialidadesCobertas: List     │
+│ + Atendimento(Consulta,...)      │        │ - pacientes: Set<Paciente>         │
+│ + getConsulta(): Consulta        │        │ ────────────────────────────────── │
+│ + getProntuario(): Prontuario    │        │ + getNomeConvenio(): String        │
+│ + adicionarObservacao(String)    │        │ + getCobertura(): double           │
+│ + adicionarProcedimento(String)  │        │ + cobreEspecialidade(String): bool │
+│ + exibirResumo(): String         │        │ + adicionarPaciente(Paciente)      │
+│ + exportarDados(): String        │        │ + exibirResumo(): String           │
+└──────────────┬───────────────────┘        └────────────────────────────────────┘
+               │ COMPOSIÇÃO
+               ▼
+    ┌────────────────────────────────┐
+    │           Prontuario           │
+    │ ────────────────────────────── │
+    │ - observacoes: String          │
+    │ - diagnostico: String          │
+    │ - procedimentos: List<String>  │
+    │ - dataRegistro: String         │
+    │ ────────────────────────────── │
+    │ + getObservacoes(): String     │
+    │ + getDiagnostico(): String     │
+    │ + getProcedimentos(): List     │
+    │ + adicionarProcedimento(String)│
+    │ + adicionarProcedimentos(List) │
+    │ + exibirResumo(): String       │
+    │ + exportarDados(): String      │
+    └────────────────────────────────┘
 ```
-
-A branch `main` deve conter apenas versões finais e funcionais do sistema.
-
 ---
 
-# Regras do Time
+### 🔷 Pagamento
 
-* Nunca realizar commits diretamente na `main`.
-* Sempre trabalhar em uma branch própria.
-* Atualizar sua branch com a `dev` antes de abrir Pull Request.
-* Resolver conflitos na sua branch antes do merge.
-* Não enviar código que não compile.
-* Testar todas as alterações antes de solicitar merge.
-* Utilizar mensagens de commit claras e objetivas.
->>>>>>> 548ec144ad100357b4adf836c56c2fd1efdef21b
+```
+                    ┌───────────────────────────────┐
+                    │           Pagamento           │
+                    │ ───────────────────────────── │
+                    │ - consulta: Consulta          │
+                    │ - valorFinal: double          │
+                    │ - parcelas: int               │
+                    │ ───────────────────────────── │
+                    │ + calcularValorFinal(): double│
+                    │ + exibirResumo(): String      │
+                    │ + getConsulta(): Consulta     │
+                    │ + getValorFinal(): double     │
+                    │ + getParcelas(): int          │
+                    └────────────┬──────────────────┘
+                                 │
+              ┌──────────────────┼──────────────────┐
+              ▼                  ▼                  ▼
+    ┌──────────────────┐ ┌──────────────────┐ ┌────────────────────────┐
+    │PagamentoDinheiro │ │ PagamentoCartao  │ │  PagamentoConvenio     │
+    │ ──────────────── │ │ ──────────────── │ │ ────────────────────── │
+    │ + calcularValor  │ │ + calcularValor  │ │ - convenio: Convenio   │
+    │   Final(): double│ │   Final(): double│ │ - especialidade: String│
+    │                  │ │                  │ │ + calcularValor        │
+    │                  │ │                  │ │   Final(): double      │
+    └──────────────────┘ └──────────────────┘ └────────────────────────┘
+```
+---
 
+### 🔷 HorarioDisponivel
+
+```
+┌──────────────────────────────────┐
+│        HorarioDisponivel         │
+│ ──────────────────────────────── │
+│ - diaSemana: String              │
+│ - turno: String                  │
+│ ──────────────────────────────── │
+│ + getDiaSemana(): String         │
+│ + getTurno(): String             │
+│ + exibirResumo(): String         │
+│ + equals(Object): boolean        │
+│ + hashCode(): int                │
+└──────────────────────────────────┘
+```
+---
+
+### 🔷 ClinicaServico (Serviço Principal)
+
+```
+┌──────────────────────────────────────────────────────────────────────┐
+│                          ClinicaServico                              │
+│ ──────────────────────────────────────────────────────────────────── │
+│ - pacientes: Map<String, Paciente>                                   │
+│ - profissionais: Map<String, Profissional>                           │
+│ - consultas: List<Consulta>                                          │
+│ - atendimentos: List<Atendimento>                                    │
+│ - pagamentos: Set<Pagamento>                                         │
+│ - todasPessoas: List<Pessoa>                                         │
+│ - cpfsCadastrados: Set<String>                                       │
+│ ──────────────────────────────────────────────────────────────────── │
+│ + cadastrarPaciente(Paciente): void                                  │
+│ + buscarPacientePorCpf(String): Paciente                             │
+│ + cadastrarProfissional(Profissional): void                          │
+│ + buscarProfissionalPorCpf(String): Profissional                     │
+│ + buscarProfissionalPorRegistro(String): Profissional                │
+│ + agendarConsulta(String, String, String, String, String): void      │
+│ + cancelarConsulta(String, String, String): void                     │
+│ + remarcarConsulta(String, String, String, String, String): void     │
+│ + registrarAtendimento(...): Atendimento                             │
+│ + registrarPagamento(...): Pagamento                                 │
+│ + listarPacientes(): void                                            │
+│ + listarProfissionais(): void                                        │
+│ + listarConsultas(): void                                            │
+│ + getPacientes(): Map<String, Paciente>                              │
+│ + getProfissionais(): Map<String, Profissional>                      │
+│ + getConsultas(): List<Consulta>                                     │
+│ + getAtendimentos(): List<Atendimento>                               │
+│ + getPagamentos(): Set<Pagamento>                                    │
+│ + getTodasPessoas(): List<Pessoa>                                    │
+└──────────────────────────────────────────────────────────────────────┘
+```
+---
+
+### 🔷 Relatorio
+
+```
+┌──────────────────────────────────────────┐
+│                Relatorio                 │
+│ ──────────────────────────────────────── │
+│ + gerarRelatorioUnificado(List<Pessoa>)  │
+│ + gerarRelatorioConsultas()              │
+│ + gerarRelatorioPorProfissional()        │
+│ + gerarResumoFinanceiro()                │
+│ + exportarDados()                        │
+└──────────────────────────────────────────┘
+```
+---
+
+## 🔗 Relacionamentos
+
+| Tipo | Origem | Destino |
+|------|--------|---------|
+| **Associação** | `Paciente` | `Convenio` |
+| **Agregação** | `Profissional` | `List<HorarioDisponivel>` |
+| **Composição** | `Atendimento` | `Prontuario` |
+| **Implementação** | `Consulta` | `Agendavel`, `Exportavel` |
+| **Herança** | `Paciente`, `Profissional` | `Pessoa` |
+| **Herança** | `ClinicoGeral`, `Fisioterapeuta`, `Psicologo`, `Nutricionista` | `Profissional` |
+| **Herança** | `PagamentoDinheiro`, `PagamentoCartao`, `PagamentoConvenio` | `Pagamento` |
