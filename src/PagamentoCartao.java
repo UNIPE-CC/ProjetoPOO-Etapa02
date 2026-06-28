@@ -4,7 +4,7 @@ public class PagamentoCartao extends Pagamento {
     private static final double TAXA_PARCELA_EXTRA = 2.5;
 
     // SOBRECARGA: construtores com diferentes parâmetros
-    public PagamentoCartao(Consulta consulta, double valorFinal, int parcelas) {
+    public PagamentoCartao(Consulta consulta, double valorFinal, int parcelas) throws PagamentoInvalidoException {
         super(consulta, valorFinal, "cartao", parcelas);
         validarParcelas(parcelas);
     }
@@ -13,7 +13,7 @@ public class PagamentoCartao extends Pagamento {
         super(consulta, valorFinal, "cartao");
     }
 
-    private void validarParcelas(int parcelas) {
+    private void validarParcelas(int parcelas) throws PagamentoInvalidoException {
         if (parcelas < 1 || parcelas > MAX_PARCELAS) {
             throw new PagamentoInvalidoException(
                 "Numero de parcelas invalido. Minimo 1, maximo " + MAX_PARCELAS

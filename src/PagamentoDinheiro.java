@@ -30,7 +30,7 @@ public class PagamentoDinheiro extends Pagamento {
 
     // SOBRESCRITA: implementação específica para dinheiro/PIX
     @Override
-    public double calcularValorFinal() {
+    public double calcularValorFinal() throws PagamentoInvalidoException{
         double valorBase = getValorFinal();
         
         if (valorBase < 0) {
@@ -47,7 +47,7 @@ public class PagamentoDinheiro extends Pagamento {
         return valorComDesconto;
     }
 
-    public double calcularValorComDescontoPersonalizado(double desconto) {
+    public double calcularValorComDescontoPersonalizado(double desconto) throws PagamentoInvalidoException{
         if (desconto < 0 || desconto > 1) {
             throw new PagamentoInvalidoException("Desconto invalido. Deve estar entre 0% e 100%");
         }
