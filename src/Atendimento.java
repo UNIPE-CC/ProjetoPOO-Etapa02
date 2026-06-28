@@ -1,4 +1,4 @@
-public class Atendimento {
+public class Atendimento implements Exportavel{
     private int indiceConsulta;
     private String observacoes;
     private String diagnostico;
@@ -115,5 +115,10 @@ public class Atendimento {
             }
         }
         return resumo;
+    }
+    
+    @Override
+    public String exportarDados() {
+        return "Atendimento: " + getIndiceConsulta() + " | Observacoes: " + getObservacoes() + " | Diagnostico: " + getDiagnostico();
     }
 }

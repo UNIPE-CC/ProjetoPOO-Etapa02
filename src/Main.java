@@ -222,7 +222,7 @@ public class Main {
     public static void cadastrarProfissional() {
         System.out.print("Nome: ");
         String nome = sc.nextLine();
-        System.out.println("Registro: ");//mod
+        System.out.print("Registro: ");//mod
         String reg = sc.nextLine();
         System.out.print("Especialidade (clinica geral/fisioterapia/psicologia/nutricao): ");
         String esp = sc.nextLine();

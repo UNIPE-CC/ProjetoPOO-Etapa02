@@ -1,7 +1,7 @@
 public interface Agendavel {
     void agendar();
     
-    String cancelar();
+    void cancelar();
     
     void remarcar();
 }

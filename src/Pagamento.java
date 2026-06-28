@@ -1,4 +1,4 @@
-public abstract class Pagamento {
+public abstract class Pagamento implements Exportavel{
     private int indiceConsulta;
     private double valorFinal;
     private String tipoPagamento;
@@ -89,4 +89,9 @@ public abstract class Pagamento {
     }
     
     public abstract double calcularValorFinal();
+    
+    @Override
+    public String exportarDados() {
+        return "Pagamento: " + getIndiceConsulta() + " | Valor: " + getValorFinal() + " | forma de pagamento: " + getTipoPagamento();
+    }
 }
