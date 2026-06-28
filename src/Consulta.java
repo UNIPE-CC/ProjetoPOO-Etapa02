@@ -6,11 +6,12 @@ public class Consulta implements Agendavel, Exportavel {
     private String tipo;
     private String status;
 
+    // SOBRECARGA: construtores com diferentes parâmetros
     public Consulta(Paciente paciente, Profissional profissional, String data, String horario) {
         this.paciente = paciente;
         this.profissional = profissional;
-        this.data = data;
-        this.horario = horario;
+        setData(data);
+        setHorario(horario);
         this.tipo = "inicial";
         this.status = "agendada";
     }
@@ -18,9 +19,9 @@ public class Consulta implements Agendavel, Exportavel {
     public Consulta(Paciente paciente, Profissional profissional, String data, String horario, String tipo) {
         this.paciente = paciente;
         this.profissional = profissional;
-        this.data = data;
-        this.horario = horario;
-        this.tipo = tipo;
+        setData(data);
+        setHorario(horario);
+        setTipo(tipo);
         this.status = "agendada";
     }
 
@@ -46,7 +47,9 @@ public class Consulta implements Agendavel, Exportavel {
 
     public void setData(String data) {
         if (data != null && !data.trim().isEmpty()) {
-            this.data = data;
+            this.data = data.trim();
+        } else {
+            this.data = "";
         }
     }
 
@@ -56,7 +59,9 @@ public class Consulta implements Agendavel, Exportavel {
 
     public void setHorario(String horario) {
         if (horario != null && !horario.trim().isEmpty()) {
-            this.horario = horario;
+            this.horario = horario.trim();
+        } else {
+            this.horario = "";
         }
     }
 
@@ -66,7 +71,9 @@ public class Consulta implements Agendavel, Exportavel {
 
     public void setTipo(String tipo) {
         if (tipo != null && !tipo.trim().isEmpty()) {
-            this.tipo = tipo;
+            this.tipo = tipo.trim();
+        } else {
+            this.tipo = "inicial";
         }
     }
 
@@ -75,8 +82,16 @@ public class Consulta implements Agendavel, Exportavel {
     }
 
     public void setStatus(String status) {
-        if (status != null && !status.trim().isEmpty()) {
-            this.status = status;
+        if (status != null) {
+            String s = status.trim().toLowerCase();
+            if (s.equals("agendada") || s.equals("realizada") || 
+                s.equals("cancelada") || s.equals("remarcada")) {
+                this.status = s;
+            } else {
+                this.status = "agendada";
+            }
+        } else {
+            this.status = "agendada";
         }
     }
 
@@ -96,12 +111,16 @@ public class Consulta implements Agendavel, Exportavel {
         return status.equals("remarcada");
     }
 
+    public boolean isAtiva() {
+        return status.equals("agendada") || status.equals("remarcada");
+    }
+
+    // SOBRESCRITA: implementação da interface Agendavel
     @Override
     public void agendar() {
-        if (status.equals("agendada") || status.equals("remarcada")) {
-            return;
+        if (status.equals("cancelada") || status.equals("")) {
+            this.status = "agendada";
         }
-        this.status = "agendada";
     }
 
     @Override
@@ -116,9 +135,13 @@ public class Consulta implements Agendavel, Exportavel {
         return "Consulta cancelada com sucesso.";
     }
 
+    // SOBRECARGA: método cancelar com motivo adicional
     public String cancelar(String motivo) {
         String resultado = cancelar();
-        return resultado + " Motivo: " + motivo;
+        if (motivo != null && !motivo.trim().isEmpty()) {
+            return resultado + " Motivo: " + motivo.trim();
+        }
+        return resultado;
     }
 
     @Override
@@ -134,6 +157,13 @@ public class Consulta implements Agendavel, Exportavel {
         }
     }
 
+    public void reativar() {
+        if (status.equals("cancelada")) {
+            this.status = "agendada";
+        }
+    }
+
+    // SOBRESCRITA: implementação da interface Exportavel
     @Override
     public String exportarDados() {
         StringBuilder sb = new StringBuilder();
@@ -150,10 +180,18 @@ public class Consulta implements Agendavel, Exportavel {
     }
 
     public String exibirResumo() {
-        String pacienteNome = paciente != null ? paciente.getNome() : "N/A";
-        String profissionalNome = profissional != null ? profissional.getNome() : "N/A";
-        return "Paciente: " + pacienteNome + " | Prof: " + profissionalNome +
-                " | Data: " + data + " | Hora: " + horario +
-                " | Tipo: " + tipo + " | Status: " + status;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Paciente: ").append(paciente != null ? paciente.getNome() : "N/A");
+        sb.append(" | Profissional: ").append(profissional != null ? profissional.getNome() : "N/A");
+        sb.append(" | Data: ").append(data);
+        sb.append(" | Horário: ").append(horario);
+        sb.append(" | Tipo: ").append(tipo);
+        sb.append(" | Status: ").append(status);
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return exibirResumo();
     }
 }
