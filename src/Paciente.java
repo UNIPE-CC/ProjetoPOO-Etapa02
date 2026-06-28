@@ -1,86 +1,100 @@
-public class Paciente extends Pessoa{
+public class Paciente extends Pessoa {
     private int idade;
-    private String convenioNome;
+    private Convenio convenio;
     private boolean ativo;
 
+    // SOBRECARGA: construtores com diferentes parâmetros
     public Paciente(String nome, String cpf) {
         super(nome, cpf);
         this.idade = 0;
-        this.convenioNome = "";
+        this.convenio = null;
         this.ativo = true;
     }
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
         super(nome, cpf, telefone);
         setIdade(idade);
-        this.convenioNome = "";
+        this.convenio = null;
         this.ativo = true;
     }
 
-    // construtor com todos os dados
-    public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
+    public Paciente(String nome, String cpf, int idade, String telefone, Convenio convenio) {
         super(nome, cpf, telefone);
         setIdade(idade);
-        setConvenioNome(convenioNome);
+        setConvenio(convenio);
         this.ativo = true;
     }
 
-    // atualiza so idade e telefone
-    // idade e conveio pode se criado um metodo get e set
-    
+    // SOBRECARGA: métodos complementar com diferentes parâmetros
     public void complementar(int idade, String telefone) {
         setIdade(idade);
         setTelefone(telefone);
     }
 
-    // atualiza tudo incluindo convenio
-    public void complementar(int idade, String telefone, String convenioNome) {
+    public void complementar(int idade, String telefone, Convenio convenio) {
         setIdade(idade);
         setTelefone(telefone);
-        setConvenioNome(convenioNome);
+        setConvenio(convenio);
     }
 
     public void desativar() {
         this.ativo = false;
     }
-    
-    public int getIdade(){
-        return idade;
-    }
-    
-    public void setIdade(int idade) {
-        if (idade < 0 || idade > 130) {
-            System.out.println("Idade invalida");
-            return;
-        }
-        this.idade = idade;
+
+    public void ativar() {
+        this.ativo = true;
     }
 
-    public boolean getAtivo(){
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        if (idade >= 0 && idade <= 130) {
+            this.idade = idade;
+        } else {
+            this.idade = 0;
+        }
+    }
+
+    public boolean isAtivo() {
         return ativo;
     }
-    
-    public void setAtivo(boolean ativo){
+
+    public void setAtivo(boolean ativo) {
         this.ativo = ativo;
     }
-    
-    public String getConvenioNome(){
-        return convenioNome;
+
+    // ASSOCIAÇÃO: Paciente conhece Convenio, mas ambos existem independentemente
+    public Convenio getConvenio() {
+        return convenio;
     }
-    
-    public void setConvenioNome(String convenioNome){
-        if(convenioNome == null){
-            convenioNome = "";
+
+    public void setConvenio(Convenio convenio) {
+        this.convenio = convenio;
+    }
+
+    public String getConvenioNome() {
+        if (convenio != null) {
+            return convenio.getNomeConvenio();
         }
-        this.convenioNome = convenioNome;
+        return "Nenhum";
     }
-    
+
+    public boolean temConvenio() {
+        return convenio != null;
+    }
+
+    // SOBRESCRITA: redefine comportamento para exibir informações específicas do paciente
     @Override
     public String exibirResumo() {
-        String status = "Sim";
-        if (!ativo) {
-            status = "Nao";
-        }
-        return "Paciente: "+super.getNome()+"|  Convenio: " + convenioNome + " | Ativo: " + status;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Paciente: ").append(getNome());
+        sb.append(" | CPF: ").append(getCpf());
+        sb.append(" | Idade: ").append(idade);
+        sb.append(" | Telefone: ").append(getTelefone());
+        sb.append("\nConvenio: ").append(getConvenioNome());
+        sb.append(" | Status: ").append(ativo ? "Ativo" : "Inativo");
+        return sb.toString();
     }
 }
