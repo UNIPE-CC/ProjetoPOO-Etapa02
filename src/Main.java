@@ -95,7 +95,7 @@ public class Main {
             if (pacientesMap.containsKey(cpf)) {
                 throw new CpfCadastrado(cpf);
             }
-            System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
+            System.out.println("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
             int tipo = Integer.parseInt(sc.nextLine());
 
             if (tipo == 1) {
@@ -142,6 +142,7 @@ public class Main {
 
                 System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
             int tipo = Integer.parseInt(sc.nextLine());
+
             System.out.print("Idade: ");
             int idade = Integer.parseInt(sc.nextLine());
             System.out.print("Telefone: ");
@@ -162,41 +163,47 @@ public class Main {
         }
     }
 
-    public static void buscarPaciente() {
+    public static void buscarPaciente() throws CpfNaoEncontrado {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
-
-        Paciente paciente = pacientesMap.get(cpf);
-        
-        if(paciente == null){
-            System.out.println("Paciente nao encontrado");
-            return;
+    try{
+        if (!pacientesMap.containsKey(cpf)) {
+            throw new CpfNaoEncontrado(cpf);
         }
-        System.out.println(paciente.exibirResumo());
+        System.out.println(pacientesMap.get(cpf).exibirResumo());
+
+    }catch (CpfNaoEncontrado e){
+        System.out.println (e);
     }
 
-    public static void listarPacientes() {
-        if (pacientesMap.size() == 0) {
-            System.out.println("Nenhum paciente cadastrado.");
-            return;
-        }
-        for (Paciente paciente : pacientesMap.values()) {
-            System.out.println(paciente.exibirResumo());
-        }
     }
 
-    public static void desativarPaciente() {
+    public static void listarPacientes() throws PacienteNaoEnc {
+        try {
+            if (pacientesMap.size() == 0) {
+                throw new PacienteNaoEnc();
+            }
+
+            for (Paciente paciente : pacientesMap.values()) {
+                System.out.println(paciente.exibirResumo());
+            }
+        }catch (PacienteNaoEnc e){
+            System.out.println (e);
+        }
+    }
+    public static void desativarPaciente() throws CpfNaoEncontrado {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
+        try {
+            if (!pacientesMap.containsKey(cpf)) {
+                throw new CpfNaoEncontrado(cpf);
+            }
+            pacientesMap.get(cpf).desativar();
+            System.out.println("Paciente desativado");
 
-        Paciente paciente = pacientesMap.get(cpf);
-
-        if(paciente == null){
-            System.out.println("Paciente não encontrado");
-            return;
+        } catch (CpfNaoEncontrado e){
+            System.out.println (e);
         }
-        paciente.desativar();
-        System.out.println("Paciente desativado.");
     }
 
 

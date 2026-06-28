@@ -9,3 +9,8 @@ class CpfNaoEncontrado extends RuntimeException{
         super("CPF não encontrado!");
     }
 }
+class PacienteNaoEnc extends RuntimeException{
+    public PacienteNaoEnc (){
+        super("Nenhum paciente encontrado!");
+    }
+}
