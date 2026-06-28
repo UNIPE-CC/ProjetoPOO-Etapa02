@@ -14,6 +14,13 @@ public class Prontuario {
         this.procedimentos = new ArrayList<>();
     }
 
+    public Prontuario(String observacoes, String diagnostico, List<String> procedimentos, String dataRegistro) {
+        this.observacoes = observacoes;
+        this.diagnostico = diagnostico;
+        this.procedimentos = new ArrayList<>(procedimentos);
+        this.dataRegistro = dataRegistro;
+    }
+
     public String getObservacoes() {
         return observacoes;
     }
@@ -31,7 +38,23 @@ public class Prontuario {
     }
 
     public List<String> getProcedimentos() {
-        return procedimentos;
+        return new ArrayList<>(procedimentos);
+    }
+
+    public void adicionarProcedimento(String procedimento) {
+        if (procedimento != null && !procedimento.trim().isEmpty()) {
+            this.procedimentos.add(procedimento);
+        }
+    }
+
+    public void adicionarProcedimentos(List<String> novosProcedimentos) {
+        if (novosProcedimentos != null) {
+            for (String proc : novosProcedimentos) {
+                if (proc != null && !proc.trim().isEmpty()) {
+                    this.procedimentos.add(proc);
+                }
+            }
+        }
     }
 
     public String getDataRegistro() {
