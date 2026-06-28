@@ -2,21 +2,21 @@ public class PagamentoConvenio extends Pagamento {
     private Convenio convenio;
     private String especialidade;
 
-    public PagamentoConvenio(Consulta consulta, double valorFinal, Convenio convenio, String especialidade) {
+    public PagamentoConvenio(Consulta consulta, double valorFinal, Convenio convenio, String especialidade) throws PagamentoInvalidoException, ConvenioNaoCobreException {
         super(consulta, valorFinal, "convenio");
         validarConvenio(convenio, especialidade);
         this.convenio = convenio;
         this.especialidade = especialidade;
     }
 
-    public PagamentoConvenio(Consulta consulta, double valorFinal, Convenio convenio) {
+    public PagamentoConvenio(Consulta consulta, double valorFinal, Convenio convenio) throws PagamentoInvalidoException, ConvenioNaoCobreException{
         super(consulta, valorFinal, "convenio");
         validarConvenio(convenio, null);
         this.convenio = convenio;
         this.especialidade = "";
     }
 
-    private void validarConvenio(Convenio convenio, String especialidade) {
+    private void validarConvenio(Convenio convenio, String especialidade) throws PagamentoInvalidoException, ConvenioNaoCobreException{
         if (convenio == null) {
             throw new PagamentoInvalidoException("Convenio nao pode ser nulo");
         }
@@ -34,7 +34,7 @@ public class PagamentoConvenio extends Pagamento {
         return convenio;
     }
 
-    public void setConvenio(Convenio convenio) {
+    public void setConvenio(Convenio convenio) throws PagamentoInvalidoException {
         if (convenio == null) {
             throw new PagamentoInvalidoException("Convenio nao pode ser nulo");
         }
@@ -45,7 +45,7 @@ public class PagamentoConvenio extends Pagamento {
         return especialidade;
     }
 
-    public void setEspecialidade(String especialidade) {
+    public void setEspecialidade(String especialidade) throws ConvenioNaoCobreException{
         if (especialidade != null && !especialidade.trim().isEmpty()) {
             if (!convenio.cobreEspecialidade(especialidade)) {
                 throw new ConvenioNaoCobreException(

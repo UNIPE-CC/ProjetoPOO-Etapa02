@@ -70,7 +70,7 @@ public abstract class Pagamento implements Exportavel {
         return 0.0;
     }
 
-    public abstract double calcularValorFinal();
+    public abstract double calcularValorFinal() throws PagamentoInvalidoException;
 
     // SOBRESCRITA: implementação da interface Exportavel
     @Override
