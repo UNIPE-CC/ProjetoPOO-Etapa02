@@ -70,4 +70,23 @@ public class Prontuario {
             this.dataRegistro = dataRegistro;
         }
     }
+
+    public String exibirResumo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Data Registro: ").append(dataRegistro);
+        sb.append("\nObservacoes: ").append(observacoes);
+        sb.append("\nDiagnostico: ").append(diagnostico);
+        sb.append("\nProcedimentos: ");
+        if (procedimentos.isEmpty()) {
+            sb.append("Nenhum");
+        } else {
+            for (int i = 0; i < procedimentos.size(); i++) {
+                sb.append(procedimentos.get(i));
+                if (i < procedimentos.size() - 1) {
+                    sb.append(", ");
+                }
+            }
+        }
+        return sb.toString();
+    }
 }
