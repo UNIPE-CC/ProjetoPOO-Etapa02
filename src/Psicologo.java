@@ -1,32 +1,74 @@
 public class Psicologo extends Profissional {
     private String abordagem;
-    
-    public Psicologo(String nome, String registroProfissional){
-        super(nome, "psicologia", registroProfissional);
+
+    // SOBRECARGA: construtores com diferentes parâmetros
+    public Psicologo(String nome, String cpf, String registroProfissional) {
+        super(nome, cpf, "psicologia", registroProfissional);
+        this.abordagem = "";
     }
-    public Psicologo(String nome, String registroProfissional, double valorConsulta) {
-        super(nome, "psicologia", registroProfissional, valorConsulta);
+
+    public Psicologo(String nome, String cpf, String registroProfissional, double valorConsulta) {
+        super(nome, cpf, "psicologia", registroProfissional, valorConsulta);
+        this.abordagem = "";
     }
-    public Psicologo(String nome, String registroProfissional, double valorConsulta, String[] dias, int totalDias) {
-        super(nome, "psicologia", registroProfissional, valorConsulta, dias, totalDias);
+
+    public Psicologo(String nome, String cpf, String registroProfissional, double valorConsulta, 
+                     java.util.List<String> dias) {
+        super(nome, cpf, "psicologia", registroProfissional, valorConsulta, dias);
+        this.abordagem = "";
     }
-    
-    public String getAbordagem(){
+
+    public Psicologo(String nome, String cpf, String registroProfissional, double valorConsulta, 
+                     String abordagem) {
+        super(nome, cpf, "psicologia", registroProfissional, valorConsulta);
+        setAbordagem(abordagem);
+    }
+
+    public String getAbordagem() {
         return abordagem;
     }
-    
-    public void setAbordagem(String abordagem){
-        this.abordagem = abordagem;
+
+    public void setAbordagem(String abordagem) {
+        if (abordagem != null && !abordagem.trim().isEmpty()) {
+            this.abordagem = abordagem.trim();
+        } else {
+            this.abordagem = "";
+        }
     }
-    
+
+    public boolean possuiAbordagemDefinida() {
+        return abordagem != null && !abordagem.isEmpty();
+    }
+
+    // SOBRESCRITA: redefine comportamento para incluir informações específicas
     @Override
     public String exibirResumo() {
-        return "Espec: " + getEspecialidade() + " | Reg: " + getRegistroProfissional()
-                + " | Valor: R$" + getValorConsulta() + "| Abordagem: " + this.abordagem;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Psicólogo: ").append(getNome());
+        sb.append(" | CPF: ").append(getCpf());
+        sb.append(" | Registro: ").append(getRegistroProfissional());
+        sb.append(" | Valor: R$").append(String.format("%.2f", getValorConsulta()));
+        sb.append("\nAbordagem Terapêutica: ");
+        if (possuiAbordagemDefinida()) {
+            sb.append(abordagem);
+        } else {
+            sb.append("Não definida");
+        }
+        return sb.toString();
     }
-    
+
+    // SOBRESCRITA: adiciona informações específicas ao atendimento
     @Override
-    public void registrarEspecifico(Atendimento atendimento){
-        atendimento.setObservacoes(atendimento.getObservacoes() + " | Abordagem: " + abordagem);
+    public void registrarEspecifico(Atendimento atendimento) {
+        if (atendimento != null) {
+            String info = "Psicologia - Abordagem: " + abordagem;
+            // CONCATENA em vez de sobrescrever
+            String obsAtual = atendimento.getObservacoes();
+            if (obsAtual != null && !obsAtual.isEmpty()) {
+                atendimento.setObservacoes(obsAtual + " | " + info);
+            } else {
+                atendimento.setObservacoes(info);
+            }
+        }
     }
 }
