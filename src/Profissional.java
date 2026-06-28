@@ -1,70 +1,66 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public abstract class Profissional extends Pessoa {
-<<<<<<< HEAD
-    protected String especialidade;
-    protected String registroProfissional;
-    protected double valorConsulta;
-
-    public Profissional(String nome, String cpf, String especialidade) {
-        super(nome, cpf);
-        this.especialidade = especialidade;
-        this.registroProfissional = "";
-        this.valorConsulta = 0.0;
-    }
-
-    public String getEspecialidade() {
-        return especialidade;
-    }
-
-    public void setEspecialidade(String especialidade) {
-        this.especialidade = especialidade;
-    }
-
-    public String getRegistroProfissional() {
-        return registroProfissional;
-    }
-
-    public void setRegistroProfissional(String registroProfissional) {
-        this.registroProfissional = registroProfissional;
-    }
-
-    public double getValorConsulta() {
-        return valorConsulta;
-    }
-
-    public void setValorConsulta(double valorConsulta) {
-        this.valorConsulta = valorConsulta;
-    }
-
-    protected boolean especialidadeValida(String esp) {
-        return esp.equalsIgnoreCase("clinica geral") ||
-               esp.equalsIgnoreCase("fisioterapia") ||
-               esp.equalsIgnoreCase("psicologia") ||
-               esp.equalsIgnoreCase("nutricao");
-    }
-
-    public abstract void registrarEspecifico(Atendimento atendimento);
-
-    @Override
-    public String exibirResumo() {
-        return "Nome: " + getNome() + " | CPF: " + getCpf() + " | Espec: " + especialidade +
-                " | Reg: " + registroProfissional + " | Valor: R$" + valorConsulta;
-=======
     private String especialidade;
     private String registroProfissional;
     private double valorConsulta;
-    private String[] diasDisponiveis;
-    private int totalDias;
+    private List<String> diasDisponiveis;
+    private List<HorarioDisponivel> horarios;
+
+    // SOBRECARGA: construtores com diferentes parâmetros
+    public Profissional(String nome, String cpf, String especialidade) {
+        super(nome, cpf);
+        setEspecialidade(especialidade);
+        this.registroProfissional = "";
+        this.valorConsulta = 0.0;
+        this.diasDisponiveis = new ArrayList<>();
+        this.horarios = new ArrayList<>();
+    }
+
+    public Profissional(String nome, String cpf, String especialidade, String registroProfissional) {
+        super(nome, cpf);
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
+        this.valorConsulta = 0.0;
+        this.diasDisponiveis = new ArrayList<>();
+        this.horarios = new ArrayList<>();
+    }
+
+    public Profissional(String nome, String cpf, String especialidade, String registroProfissional, double valorConsulta) {
+        super(nome, cpf);
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
+        setValorConsulta(valorConsulta);
+        this.diasDisponiveis = new ArrayList<>();
+        this.horarios = new ArrayList<>();
+    }
+
+    public Profissional(String nome, String cpf, String especialidade, String registroProfissional, 
+                        double valorConsulta, List<String> dias) {
+        super(nome, cpf);
+        setEspecialidade(especialidade);
+        setRegistroProfissional(registroProfissional);
+        setValorConsulta(valorConsulta);
+        this.diasDisponiveis = new ArrayList<>();
+        this.horarios = new ArrayList<>();
+        if (dias != null) {
+            for (String dia : dias) {
+                adicionarDiaDisponivel(dia);
+            }
+        }
+    }
 
     public String getEspecialidade() {
         return especialidade;
     }
 
     public void setEspecialidade(String especialidade) {
-        if (!especialidadeValida(especialidade)) {
-            System.out.println("Especialidade invalida.");
-            return;
+        if (especialidadeValida(especialidade)) {
+            this.especialidade = especialidade;
+        } else {
+            this.especialidade = "";
         }
-        this.especialidade = especialidade;
     }
 
     public String getRegistroProfissional() {
@@ -72,7 +68,11 @@ public abstract class Profissional extends Pessoa {
     }
 
     public void setRegistroProfissional(String registroProfissional) {
-        this.registroProfissional = registroProfissional;
+        if (registroProfissional != null && !registroProfissional.trim().isEmpty()) {
+            this.registroProfissional = registroProfissional.trim();
+        } else {
+            this.registroProfissional = "";
+        }
     }
 
     public double getValorConsulta() {
@@ -80,108 +80,99 @@ public abstract class Profissional extends Pessoa {
     }
 
     public void setValorConsulta(double valorConsulta) {
-        if(valorConsulta < 0){
-            System.out.println("Valor invalido");
-            return;
-        }
-        this.valorConsulta = valorConsulta;
-    }
-
-    public String[] getDiasDisponiveis() {
-        return diasDisponiveis;
-    }
-
-    public void setDiasDisponiveis(String[] diasDisponiveis) {
-        this.diasDisponiveis = diasDisponiveis;
-    }
-
-    public int getTotalDias() {
-        return totalDias;
-    }
-
-    public void setTotalDias(int totalDias) {
-        this.totalDias = totalDias;
-    }
-    
-    // so nome e especialidade
-     public Profissional(String nome, String especialidade) {
-        super(nome, "");           //o cpf foi dedixado com variavdefaultel 
-        this.especialidade = especialidade;
-        setRegistroProfissional(registroProfissional);
-        this.valorConsulta = 0;
-        this.diasDisponiveis = new String[7];
-        this.totalDias = 0;
-     }
-        
-    public Profissional(String nome, String especialidade, String registroProfissional) {
-        super(nome, "");           //o cpf foi dedixado com variavdefaultel 
-        setEspecialidade(especialidade);
-        setRegistroProfissional(registroProfissional);
-        this.valorConsulta = 0;
-        this.diasDisponiveis = new String[7];
-        this.totalDias = 0;
-    }
-
-    public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta) {
-        super(nome, "");
-        setEspecialidade(especialidade);
-        setRegistroProfissional(registroProfissional);
-        setValorConsulta(valorConsulta);
-        this.diasDisponiveis = new String[7];
-        this.totalDias = 0;
-    }
-
-    // construtor completo com dias
-    public Profissional(String nome, String especialidade, String registroProfissional, double valorConsulta, String[] dias, int totalDias) {
-        super(nome, "");
-        setEspecialidade(especialidade);
-        setRegistroProfissional(registroProfissional);
-        setValorConsulta(valorConsulta);
-        this.diasDisponiveis = new String[7];
-        setTotalDias(totalDias);
-        for (int i = 0; i < totalDias; i++) {
-            this.diasDisponiveis[i] = dias[i];
+        if (valorConsulta >= 0) {
+            this.valorConsulta = valorConsulta;
+        } else {
+            this.valorConsulta = 0.0;
         }
     }
 
-    public void atualizar(String registro, double valor) {
-        setRegistroProfissional(registro);
-        setValorConsulta(valor);
+    public List<String> getDiasDisponiveis() {
+        return new ArrayList<>(diasDisponiveis);
     }
 
-    public void atualizar(String registro, double valor, String[] dias, int totalDias) {
-        setRegistroProfissional(registro);
-        setValorConsulta(valor);
-        setTotalDias(totalDias);
-        for (int i = 0; i < totalDias; i++) {
-            this.diasDisponiveis[i] = dias[i];
+    public void adicionarDiaDisponivel(String dia) {
+        if (dia != null && !dia.trim().isEmpty()) {
+            this.diasDisponiveis.add(dia.trim());
         }
     }
 
-    // verifica se o profissional atende naquele dia
+    public void removerDiaDisponivel(String dia) {
+        if (dia != null) {
+            this.diasDisponiveis.remove(dia.trim());
+        }
+    }
+
+    // AGREGAÇÃO: Profissional possui horários, mas eles existem independentemente
+    public List<HorarioDisponivel> getHorarios() {
+        return new ArrayList<>(horarios);
+    }
+
+    public void adicionarHorario(HorarioDisponivel horario) {
+        if (horario != null && !this.horarios.contains(horario)) {
+            this.horarios.add(horario);
+        }
+    }
+
+    public void removerHorario(HorarioDisponivel horario) {
+        if (horario != null) {
+            this.horarios.remove(horario);
+        }
+    }
+
     public boolean atendeNoDia(String dia) {
-        for (int i = 0; i < totalDias; i++) {
-            if (diasDisponiveis[i].equals(dia)) {
+        if (dia == null) return false;
+        for (String diaDisponivel : diasDisponiveis) {
+            if (diaDisponivel.equalsIgnoreCase(dia.trim())) {
                 return true;
             }
         }
         return false;
     }
 
-    // valida as especialidades aceitas pela clinica
-    public static boolean especialidadeValida(String esp) {
-        if (esp.equals("clinica geral")) return true;
-        if (esp.equals("fisioterapia")) return true;
-        if (esp.equals("psicologia")) return true;
-        if (esp.equals("nutricao")) return true;
+    public boolean horarioDisponivel(String dia, String turno) {
+        for (HorarioDisponivel horario : horarios) {
+            if (horario.getDiaSemana().equalsIgnoreCase(dia) && 
+                horario.getTurno().equalsIgnoreCase(turno)) {
+                return true;
+            }
+        }
         return false;
+    }
+
+    private boolean especialidadeValida(String esp) {
+        if (esp == null) return false;
+        String e = esp.trim().toLowerCase();
+        return e.equals("clinica geral") ||
+               e.equals("fisioterapia") ||
+               e.equals("psicologia") ||
+               e.equals("nutricao");
+    }
+
+    // SOBRECARGA: métodos atualizar com diferentes parâmetros
+    public void atualizar(String registro, double valor) {
+        setRegistroProfissional(registro);
+        setValorConsulta(valor);
+    }
+
+    public void atualizar(String registro, double valor, List<String> dias) {
+        setRegistroProfissional(registro);
+        setValorConsulta(valor);
+        this.diasDisponiveis.clear();
+        if (dias != null) {
+            for (String dia : dias) {
+                adicionarDiaDisponivel(dia);
+            }
+        }
     }
 
     public abstract void registrarEspecifico(Atendimento atendimento);
 
+    // SOBRESCRITA: redefine comportamento para exibir informações específicas
     @Override
     public String exibirResumo() {
-        return "Espec: " + especialidade + " | Reg: " + registroProfissional + " | Valor: R$" + valorConsulta;
->>>>>>> dev
+        return "Nome: " + getNome() + " | CPF: " + getCpf() + 
+               " | Espec: " + especialidade + " | Reg: " + registroProfissional + 
+               " | Valor: R$" + String.format("%.2f", valorConsulta);
     }
 }
