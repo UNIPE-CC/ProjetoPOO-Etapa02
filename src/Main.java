@@ -83,7 +83,11 @@ public class Main {
     }
 
 
+<<<<<<< HEAD
+    public static void cadastrarPaciente() throws CpfCadastrado {
+=======
     public static void cadastrarPaciente() throws PacienteJaCadastradoException {
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
 
             System.out.print("Nome: ");
             String nome = sc.nextLine();
@@ -93,9 +97,15 @@ public class Main {
         try {
             // verifica se ja existe
             if (pacientesMap.containsKey(cpf)) {
+<<<<<<< HEAD
+                throw new CpfCadastrado(cpf);
+            }
+            System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
+=======
                 throw new PacienteJaCadastradoException(cpf);
             }
             System.out.println("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
             int tipo = Integer.parseInt(sc.nextLine());
 
             if (tipo == 1) {
@@ -124,25 +134,40 @@ public class Main {
 
             }
             System.out.println("Paciente cadastrado com sucesso!");
+<<<<<<< HEAD
+        } catch(CpfCadastrado e){
+=======
         } catch(PacienteJaCadastradoException e){
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
             System.out.println(e);
         }
     }
 
 
+<<<<<<< HEAD
+    public static void complementarPaciente() throws CpfNaoEncontrado {
+=======
     public static void complementarPaciente() throws PacienteNaoEncontradoException {
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
         //try e catch caso não ache o paciente
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
         try{
             if (!pacientesMap.containsKey(cpf)) {
+<<<<<<< HEAD
+                throw new CpfNaoEncontrado(cpf);
+            }
+=======
                 throw new PacienteNaoEncontradoException(cpf);
             }
 
                 System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
             int tipo = Integer.parseInt(sc.nextLine());
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
 
+                System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
+            int tipo = Integer.parseInt(sc.nextLine());
             System.out.print("Idade: ");
             int idade = Integer.parseInt(sc.nextLine());
             System.out.print("Telefone: ");
@@ -158,7 +183,11 @@ public class Main {
             }
             System.out.println("Cadastro atualizado!");
 
+<<<<<<< HEAD
+        } catch(CpfNaoEncontrado e){
+=======
         } catch(PacienteNaoEncontradoException e){
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
             System.out.println(e);
         }
     }
@@ -166,6 +195,16 @@ public class Main {
     public static void buscarPaciente() throws PacienteNaoEncontradoException {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
+<<<<<<< HEAD
+
+        Paciente paciente = pacientesMap.get(cpf);
+        
+        if(paciente == null){
+            System.out.println("Paciente nao encontrado");
+            return;
+        }
+        System.out.println(paciente.exibirResumo());
+=======
     try{
         if (!pacientesMap.containsKey(cpf)) {
             throw new PacienteNaoEncontradoException(cpf);
@@ -174,6 +213,7 @@ public class Main {
 
     }catch (PacienteNaoEncontradoException e){
         System.out.println (e);
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
     }
 
     }
@@ -201,9 +241,20 @@ public class Main {
             pacientesMap.get(cpf).desativar();
             System.out.println("Paciente desativado");
 
+<<<<<<< HEAD
+        Paciente paciente = pacientesMap.get(cpf);
+
+        if(paciente == null){
+            System.out.println("Paciente não encontrado");
+            return;
+        }
+        paciente.desativar();
+        System.out.println("Paciente desativado.");
+=======
         } catch (PacienteNaoEncontradoException e){
             System.out.println (e);
         }
+>>>>>>> 30686b66f4a0d05a443022b8503c74946f17987c
     }
 
 
