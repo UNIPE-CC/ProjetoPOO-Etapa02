@@ -3,8 +3,8 @@ public class HorarioDisponivel {
     private String turno;
 
     public HorarioDisponivel(String diaSemana, String turno) {
-        this.diaSemana = diaSemana;
-        this.turno = turno;
+        setDiaSemana(diaSemana);
+        setTurno(turno);
     }
 
     public String getDiaSemana() {
@@ -12,7 +12,9 @@ public class HorarioDisponivel {
     }
 
     public void setDiaSemana(String diaSemana) {
-        this.diaSemana = diaSemana;
+        if (diaSemana != null && !diaSemana.trim().isEmpty()) {
+            this.diaSemana = diaSemana;
+        }
     }
 
     public String getTurno() {
@@ -20,7 +22,9 @@ public class HorarioDisponivel {
     }
 
     public void setTurno(String turno) {
-        this.turno = turno;
+        if (turno != null && (turno.equalsIgnoreCase("manha") || turno.equalsIgnoreCase("tarde"))) {
+            this.turno = turno.toLowerCase();
+        }
     }
 
     public String exibirResumo() {
