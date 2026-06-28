@@ -4,60 +4,81 @@ public abstract class Pessoa {
     private String telefone;
     private String dataNascimento;
     
-    // construtores para ser utilizados na classe Paciente+-
-    public Pessoa(){
-        
+    // SOBRECARGA: construtores com diferentes parâmetros
+    public Pessoa() {
+        this.nome = "";
+        this.cpf = "";
+        this.telefone = "";
+        this.dataNascimento = "";
     }
     
-    public Pessoa(String nome, String cpf){
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = ""; // nesse construtor inicializa sem o numero do telefone.
+    public Pessoa(String nome, String cpf) {
+        setNome(nome);
+        setCpf(cpf);
+        this.telefone = "";
+        this.dataNascimento = "";
     }
     
-    public Pessoa(String nome, String cpf, String telefone){
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = telefone;
+    public Pessoa(String nome, String cpf, String telefone) {
+        setNome(nome);
+        setCpf(cpf);
+        setTelefone(telefone);
+        this.dataNascimento = "";
     }
     
-    public Pessoa(String nome, String cpf, String telefone, String dataNascimento){
-        this.nome = nome;
-        this.cpf = cpf;
-        this.telefone = telefone;
-        this.dataNascimento = dataNascimento;
+    public Pessoa(String nome, String cpf, String telefone, String dataNascimento) {
+        setNome(nome);
+        setCpf(cpf);
+        setTelefone(telefone);
+        setDataNascimento(dataNascimento);
     }
     
-    public String getNome(){
+    public String getNome() {
         return nome;
     }
     
-    public void setNome(String nome){
-        this.nome = nome;
-    } 
+    public void setNome(String nome) {
+        if (nome != null && !nome.trim().isEmpty()) {
+            this.nome = nome.trim();
+        } else {
+            this.nome = "";
+        }
+    }
     
-    public String getCpf(){
+    public String getCpf() {
         return cpf;
     }
     
-    public void setCpf(String cpf){
-        this.cpf = cpf;
+    public void setCpf(String cpf) {
+        if (cpf != null && !cpf.trim().isEmpty()) {
+            this.cpf = cpf.trim();
+        } else {
+            this.cpf = "";
+        }
     }
     
-    public String getTelefone(){
+    public String getTelefone() {
         return telefone;
     }
     
-    public void setTelefone(String telefone){
-        this.telefone = telefone;
+    public void setTelefone(String telefone) {
+        if (telefone != null && !telefone.trim().isEmpty()) {
+            this.telefone = telefone.trim();
+        } else {
+            this.telefone = "";
+        }
     }
     
-    public String getDataNascimento(){
+    public String getDataNascimento() {
         return dataNascimento;
     }
     
-    public void setDataNascimento(String dataNascimento){
-        this.dataNascimento = dataNascimento;
+    public void setDataNascimento(String dataNascimento) {
+        if (dataNascimento != null && !dataNascimento.trim().isEmpty()) {
+            this.dataNascimento = dataNascimento.trim();
+        } else {
+            this.dataNascimento = "";
+        }
     }
     
     public abstract String exibirResumo();
