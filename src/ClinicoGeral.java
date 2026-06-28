@@ -4,8 +4,8 @@ public class ClinicoGeral extends Profissional {
     public ClinicoGeral(String nome, String registroProfissional){
         super(nome, "clinico geral", registroProfissional);
     }
-    public ClinicoGeral(String nome, String registroProfissional, double valor) {
-        super(nome, "clinico geral", registroProfissional, valor);
+    public ClinicoGeral(String nome, String registroProfissional, double valorConsulta) {
+        super(nome, "clinico geral", registroProfissional, valorConsulta);
     }
     public ClinicoGeral(String nome, String registroProfissional, double valorConsulta, String[] dias, int totalDias) {
         super(nome, "clinico geral", registroProfissional, valorConsulta, dias, totalDias);

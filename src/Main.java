@@ -83,77 +83,82 @@ public class Main {
     }
 
 
-    public static void cadastrarPaciente() {
-        System.out.print("Nome: ");
-        String nome = sc.nextLine();
-        System.out.print("CPF: ");
-        String cpf = sc.nextLine();
+    public static void cadastrarPaciente() throws CpfCadastrado {
 
-        // verifica se ja existe
-        if (pacientesMap.containsKey(cpf)) {
-            System.out.println("CPF ja cadastrado!");
-            return;
+            System.out.print("Nome: ");
+            String nome = sc.nextLine();
+            System.out.print("CPF: ");
+            String cpf = sc.nextLine();
+
+        try {
+            // verifica se ja existe
+            if (pacientesMap.containsKey(cpf)) {
+                throw new CpfCadastrado(cpf);
+            }
+            System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
+            int tipo = Integer.parseInt(sc.nextLine());
+
+            if (tipo == 1) {
+                Paciente paciente = new Paciente(nome, cpf);
+                pacientesMap.put(cpf, paciente);
+
+            } else if (tipo == 2) {
+                System.out.print("Idade: ");
+                int idade = Integer.parseInt(sc.nextLine());
+                System.out.print("Telefone: ");
+                String tel = sc.nextLine();
+
+                Paciente paciente = new Paciente(nome, cpf, idade, tel);
+                pacientesMap.put(cpf, paciente);
+
+            } else {
+                System.out.print("Idade: ");
+                int idade = Integer.parseInt(sc.nextLine());
+                System.out.print("Telefone: ");
+                String tel = sc.nextLine();
+                System.out.print("Convenio: ");
+                String conv = sc.nextLine();
+
+                Paciente paciente = new Paciente(nome, cpf, idade, tel, conv);
+                pacientesMap.put(cpf, paciente);
+
+            }
+            System.out.println("Paciente cadastrado com sucesso!");
+        } catch(CpfCadastrado e){
+            System.out.println(e);
         }
-
-
-        System.out.print("Tipo (1-Minimo / 2-Com idade e tel / 3-Completo): ");
-        int tipo = Integer.parseInt(sc.nextLine());
-
-        if (tipo == 1) {
-            Paciente paciente = new Paciente(nome, cpf);
-            pacientesMap.put(cpf, paciente);
-
-        } else if (tipo == 2) {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
-            System.out.print("Telefone: ");
-            String tel = sc.nextLine();
-
-            Paciente paciente = new Paciente(nome, cpf, idade, tel);
-            pacientesMap.put(cpf, paciente);
-
-        } else {
-            System.out.print("Idade: ");
-            int idade = Integer.parseInt(sc.nextLine());
-            System.out.print("Telefone: ");
-            String tel = sc.nextLine();
-            System.out.print("Convenio: ");
-            String conv = sc.nextLine();
-
-            Paciente paciente = new Paciente(nome, cpf, idade, tel, conv);
-            pacientesMap.put(cpf, paciente);
-
-        }
-        System.out.println("Paciente cadastrado com sucesso!");
     }
 
 
-    public static void complementarPaciente() {
+    public static void complementarPaciente() throws CpfNaoEncontrado {
         //try e catch caso não ache o paciente
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
-        if (pacientesMap.containsKey(cpf)) {
-            System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
-            int tipo = Integer.parseInt(sc.nextLine());
+        try{
+            if (!pacientesMap.containsKey(cpf)) {
+                throw new CpfNaoEncontrado(cpf);
+            }
 
+                System.out.print("Vai informar convenio? (1-Nao / 2-Sim): ");
+            int tipo = Integer.parseInt(sc.nextLine());
             System.out.print("Idade: ");
             int idade = Integer.parseInt(sc.nextLine());
             System.out.print("Telefone: ");
             String tel = sc.nextLine();
 
             if(tipo == 1) {
-                pacientesMap.get("123").complementar(idade, tel);
+                pacientesMap.get(cpf).complementar(idade, tel);
             } else {
                 System.out.print("Convenio: ");
                 String conv = sc.nextLine();
 
-                pacientesMap.get("123").complementar(idade, tel, conv);
+                pacientesMap.get(cpf).complementar(idade, tel, conv);
             }
             System.out.println("Cadastro atualizado!");
 
-        } else {
-            System.out.println("Nenhum paciente encontrado");
+        } catch(CpfNaoEncontrado e){
+            System.out.println(e);
         }
     }
 
@@ -161,9 +166,13 @@ public class Main {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
-        System.out.println(pacientesMap.get(cpf).exibirResumo());
-
-        //System.out.println("Nenhum paciente encontrado");
+        Paciente paciente = pacientesMap.get(cpf);
+        
+        if(paciente == null){
+            System.out.println("Paciente nao encontrado");
+            return;
+        }
+        System.out.println(paciente.exibirResumo());
     }
 
     public static void listarPacientes() {
@@ -180,9 +189,14 @@ public class Main {
         System.out.print("CPF: ");
         String cpf = sc.nextLine();
 
-        pacientesMap.get(cpf).desativar();
+        Paciente paciente = pacientesMap.get(cpf);
 
-        //System.out.println("Paciente nao encontrado.");
+        if(paciente == null){
+            System.out.println("Paciente não encontrado");
+            return;
+        }
+        paciente.desativar();
+        System.out.println("Paciente desativado.");
     }
 
 

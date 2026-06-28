@@ -8,17 +8,17 @@ public class Prontuario {
     private String dataRegistro;
 
     public Prontuario(String observacoes, String diagnostico, String dataRegistro) {
-        this.observacoes = observacoes;
-        this.diagnostico = diagnostico;
-        this.dataRegistro = dataRegistro;
+        setObservacoes(observacoes);
+        setDiagnostico(diagnostico);
+        setDataRegistro(dataRegistro);
         this.procedimentos = new ArrayList<>();
     }
 
     public Prontuario(String observacoes, String diagnostico, List<String> procedimentos, String dataRegistro) {
-        this.observacoes = observacoes;
-        this.diagnostico = diagnostico;
+        setObservacoes(observacoes);
+        setDiagnostico(diagnostico);
+        setDataRegistro(dataRegistro);
         this.procedimentos = new ArrayList<>(procedimentos);
-        this.dataRegistro = dataRegistro;
     }
 
     public String getObservacoes() {
@@ -26,7 +26,9 @@ public class Prontuario {
     }
 
     public void setObservacoes(String observacoes) {
-        this.observacoes = observacoes;
+        if (observacoes != null && !observacoes.trim().isEmpty()) {
+            this.observacoes = observacoes;
+        }
     }
 
     public String getDiagnostico() {
@@ -34,7 +36,9 @@ public class Prontuario {
     }
 
     public void setDiagnostico(String diagnostico) {
-        this.diagnostico = diagnostico;
+        if (diagnostico != null && !diagnostico.trim().isEmpty()) {
+            this.diagnostico = diagnostico;
+        }
     }
 
     public List<String> getProcedimentos() {
@@ -62,6 +66,8 @@ public class Prontuario {
     }
 
     public void setDataRegistro(String dataRegistro) {
-        this.dataRegistro = dataRegistro;
+        if (dataRegistro != null && !dataRegistro.trim().isEmpty()) {
+            this.dataRegistro = dataRegistro;
+        }
     }
 }
