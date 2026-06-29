@@ -1,58 +1,117 @@
-public class Pagamento {
-    public int indiceConsulta;
-    public double valorFinal;
-    public String tipoPagamento;
-    public int parcelas;
+public abstract class Pagamento implements Exportavel {
+    private Consulta consulta;
+    private double valorFinal;
+    private String tipoPagamento;
+    private int parcelas;
 
-    public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento) {
-        this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
+    // SOBRECARGA: construtores com diferentes parâmetros
+    public Pagamento(Consulta consulta, double valorFinal, String tipoPagamento) {
+        this.consulta = consulta;
+        setValorFinal(valorFinal);
+        setTipoPagamento(tipoPagamento);
         this.parcelas = 1;
     }
 
-    // com parcelas (so pra cartao)
-    public Pagamento(int indiceConsulta, double valorFinal, String tipoPagamento, int parcelas) {
-        this.indiceConsulta = indiceConsulta;
-        this.valorFinal = valorFinal;
-        this.tipoPagamento = tipoPagamento;
-        this.parcelas = parcelas;
+    public Pagamento(Consulta consulta, double valorFinal, String tipoPagamento, int parcelas) {
+        this.consulta = consulta;
+        setValorFinal(valorFinal);
+        setTipoPagamento(tipoPagamento);
+        setParcelas(parcelas);
     }
 
-    // sem desconto nenhum
-    public static double calcularValor(double valorBase) {
-        return valorBase;
+    public Consulta getConsulta() {
+        return consulta;
     }
 
-    // com desconto em percentual
-    public static double calcularValor(double valorBase, double percentualDesconto) {
-        double desconto = valorBase * percentualDesconto / 100;
-        double valor = valorBase - desconto;
-        if (valor < 0) {
-            valor = 0;
+    public void setConsulta(Consulta consulta) {
+        this.consulta = consulta;
+    }
+
+    public double getValorFinal() {
+        return valorFinal;
+    }
+
+    public void setValorFinal(double valorFinal) {
+        if (valorFinal >= 0) {
+            this.valorFinal = valorFinal;
+        } else {
+            this.valorFinal = 0.0;
         }
-        return valor;
     }
 
-    // com desconto e multa somada
-    public static double calcularValor(double valorBase, double percentualDesconto, double multa) {
-        double desconto = valorBase * percentualDesconto / 100;
-        double valor = valorBase - desconto + multa;
-        if (valor < 0) {
-            valor = 0;
+    public String getTipoPagamento() {
+        return tipoPagamento;
+    }
+
+    public void setTipoPagamento(String tipoPagamento) {
+        if (tipoPagamento != null && !tipoPagamento.trim().isEmpty()) {
+            this.tipoPagamento = tipoPagamento.trim().toLowerCase();
+        } else {
+            this.tipoPagamento = "";
         }
-        return valor;
+    }
+
+    public int getParcelas() {
+        return parcelas;
+    }
+
+    public void setParcelas(int parcelas) {
+        if (parcelas >= 1 && parcelas <= 6) {
+            this.parcelas = parcelas;
+        } else {
+            this.parcelas = 1;
+        }
+    }
+
+    public double getValorParcela() {
+        if (parcelas > 0) {
+            return Math.round((valorFinal / parcelas) * 100.0) / 100.0;
+        }
+        return 0.0;
+    }
+
+    public abstract double calcularValorFinal() throws PagamentoInvalidoException;
+
+    // SOBRESCRITA: implementação da interface Exportavel
+    @Override
+    public String exportarDados() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("PAGAMENTO;\n");
+        if (consulta != null) {
+            sb.append("Paciente: ").append(consulta.getPaciente() != null ? 
+                                           consulta.getPaciente().getNome() : "N/A").append(";");
+            sb.append("CPF: ").append(consulta.getPaciente() != null ? 
+                                      consulta.getPaciente().getCpf() : "N/A").append(";");
+            sb.append("Profissional: ").append(consulta.getProfissional() != null ? 
+                                               consulta.getProfissional().getNome() : "N/A").append(";");
+            sb.append("Data: ").append(consulta.getData()).append(";");
+            sb.append("Horario: ").append(consulta.getHorario()).append(";");
+        }
+        sb.append("Tipo: ").append(tipoPagamento).append(";");
+        sb.append("Valor Final: ").append(String.format("%.2f", valorFinal)).append(";");
+        sb.append("Parcelas: ").append(parcelas);
+        if (parcelas > 1) {
+            sb.append(" (R$").append(String.format("%.2f", getValorParcela())).append(" cada)");
+        }
+        return sb.toString();
     }
 
     public String exibirResumo() {
-        // arredonda pra 2 casas
-        double valorArredondado = Math.round(valorFinal * 100.0) / 100.0;
-        String resumo = "Consulta #" + indiceConsulta + " | Valor: R$" + valorArredondado
-                + " | Tipo: " + tipoPagamento + " | Parcelas: " + parcelas;
+        StringBuilder sb = new StringBuilder();
+        sb.append("Pagamento - Tipo: ").append(tipoPagamento);
+        sb.append(" | Valor: R$").append(String.format("%.2f", valorFinal));
+        sb.append(" | Parcelas: ").append(parcelas);
         if (parcelas > 1) {
-            double valorParcela = Math.round((valorFinal / parcelas) * 100.0) / 100.0;
-            resumo = resumo + " (R$" + valorParcela + " cada)";
+            sb.append(" (R$").append(String.format("%.2f", getValorParcela())).append(" cada)");
         }
-        return resumo;
+        if (consulta != null) {
+            sb.append(" | Consulta: ").append(consulta.getData()).append(" ").append(consulta.getHorario());
+        }
+        return sb.toString();
+    }
+
+    @Override
+    public String toString() {
+        return exibirResumo();
     }
 }

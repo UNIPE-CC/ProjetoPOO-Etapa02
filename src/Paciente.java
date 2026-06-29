@@ -1,63 +1,100 @@
-public class Paciente {
-    public String nome;
-    public String cpf;
-    public int idade;
-    public String telefone;
-    public String convenioNome;
-    public boolean ativo;
+public class Paciente extends Pessoa {
+    private int idade;
+    private Convenio convenio;
+    private boolean ativo;
 
+    // SOBRECARGA: construtores com diferentes parâmetros
     public Paciente(String nome, String cpf) {
-        this.nome = nome;
-        this.cpf = cpf;
+        super(nome, cpf);
         this.idade = 0;
-        this.telefone = "";
-        this.convenioNome = "";
+        this.convenio = null;
         this.ativo = true;
     }
 
     public Paciente(String nome, String cpf, int idade, String telefone) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.idade = idade;
-        this.telefone = telefone;
-        this.convenioNome = "";
+        super(nome, cpf, telefone);
+        setIdade(idade);
+        this.convenio = null;
         this.ativo = true;
     }
 
-    // construtor com todos os dados
-    public Paciente(String nome, String cpf, int idade, String telefone, String convenioNome) {
-        this.nome = nome;
-        this.cpf = cpf;
-        this.idade = idade;
-        this.telefone = telefone;
-        this.convenioNome = convenioNome;
+    public Paciente(String nome, String cpf, int idade, String telefone, Convenio convenio) {
+        super(nome, cpf, telefone);
+        setIdade(idade);
+        setConvenio(convenio);
         this.ativo = true;
     }
 
-    // atualiza so idade e telefone
+    // SOBRECARGA: métodos complementar com diferentes parâmetros
     public void complementar(int idade, String telefone) {
-        this.idade = idade;
-        this.telefone = telefone;
+        setIdade(idade);
+        setTelefone(telefone);
     }
 
-    // atualiza tudo incluindo convenio
-    public void complementar(int idade, String telefone, String convenioNome) {
-        this.idade = idade;
-        this.telefone = telefone;
-        this.convenioNome = convenioNome;
+    public void complementar(int idade, String telefone, Convenio convenio) {
+        setIdade(idade);
+        setTelefone(telefone);
+        setConvenio(convenio);
     }
 
     public void desativar() {
         this.ativo = false;
     }
 
-    public String exibirResumo() {
-        String status = "Sim";
-        if (!ativo) {
-            status = "Nao";
+    public void ativar() {
+        this.ativo = true;
+    }
+
+    public int getIdade() {
+        return idade;
+    }
+
+    public void setIdade(int idade) {
+        if (idade >= 0 && idade <= 130) {
+            this.idade = idade;
+        } else {
+            this.idade = 0;
         }
-        return "Nome: " + nome + " | CPF: " + cpf + " | Idade: " + idade
-                + " | Tel: " + telefone + " | Convenio: " + convenioNome
-                + " | Ativo: " + status;
+    }
+
+    public boolean isAtivo() {
+        return ativo;
+    }
+
+    public void setAtivo(boolean ativo) {
+        this.ativo = ativo;
+    }
+
+    // ASSOCIAÇÃO: Paciente conhece Convenio, mas ambos existem independentemente
+    public Convenio getConvenio() {
+        return convenio;
+    }
+
+    public void setConvenio(Convenio convenio) {
+        this.convenio = convenio;
+    }
+
+    public String getConvenioNome() {
+        if (convenio != null) {
+            return convenio.getNomeConvenio();
+        }
+        return "Nenhum";
+    }
+
+    public boolean temConvenio() {
+        return convenio != null;
+    }
+
+    // SOBRESCRITA: redefine comportamento para exibir informações específicas do paciente
+    @Override
+    public String exibirResumo() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Paciente: ").append(getNome());
+        sb.append(" | CPF: ").append(getCpf());
+        sb.append(" | Idade: ").append(idade);
+        sb.append(" | Telefone: ").append(getTelefone());
+        sb.append("\nConvenio: ").append(getConvenioNome());
+        sb.append(" | Status: ").append(ativo ? "Ativo" : "Inativo");
+        return sb.toString();
     }
 }
