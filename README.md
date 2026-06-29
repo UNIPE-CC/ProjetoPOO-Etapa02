@@ -151,7 +151,8 @@
 
 ```
                     ┌───────────────────────────────┐
-                    │           Pagamento           │
+                    │          <<abstract>>         |
+                    |            Pagamento          │
                     │ ───────────────────────────── │
                     │ - consulta: Consulta          │
                     │ - valorFinal: double          │
